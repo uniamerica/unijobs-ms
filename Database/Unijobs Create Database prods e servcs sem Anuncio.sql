@@ -77,7 +77,11 @@ CREATE TABLE IF NOT EXISTS unijobs.produtos (
     miniatura VARCHAR(500) NOT NULL,
     ativo TINYINT NOT NULL,
     prazo INT NOT NULL,
+    id_usuario INT NOT NULL,
     PRIMARY KEY (id_produto),
+    FOREIGN KEY (id_usuario)
+        REFERENCES unijobs.usuarios (id_usuario)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (id_tipoProduto)
         REFERENCES unijobs.tipos_produto (id_tipoProduto)
         ON DELETE RESTRICT ON UPDATE CASCADE
@@ -92,7 +96,11 @@ CREATE TABLE IF NOT EXISTS unijobs.servicos (
     miniatura VARCHAR(500) NOT NULL,
     ativo TINYINT NOT NULL,
     prazo INT NOT NULL,
+    id_usuario INT NOT NULL,
     PRIMARY KEY (id_servico),
+    FOREIGN KEY (id_usuario)
+        REFERENCES unijobs.usuarios (id_usuario)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (id_tipoServico)
         REFERENCES unijobs.tipos_servico (id_tipoServico)
         ON DELETE RESTRICT ON UPDATE CASCADE
