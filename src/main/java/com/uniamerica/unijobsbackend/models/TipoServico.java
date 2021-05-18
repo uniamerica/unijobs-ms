@@ -1,10 +1,11 @@
-package com.uniamerica.unijobsbackend.tipoServico;
+package com.uniamerica.unijobsbackend.models;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -20,6 +21,9 @@ public class TipoServico {
 
     @NotBlank(message = "A Descrição é obrigatória")
     private String descricao;
+
+    @OneToMany(mappedBy = "tipoServico")
+    private List<Servico> servico = new ArrayList<>();
 
     public TipoServico(String nome, String descricao) {
         this.nome = nome;

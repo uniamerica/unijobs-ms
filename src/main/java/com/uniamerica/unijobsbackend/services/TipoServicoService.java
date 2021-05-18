@@ -1,5 +1,7 @@
-package com.uniamerica.unijobsbackend.tipoServico;
+package com.uniamerica.unijobsbackend.services;
 
+import com.uniamerica.unijobsbackend.models.TipoServico;
+import com.uniamerica.unijobsbackend.repositories.TipoServicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

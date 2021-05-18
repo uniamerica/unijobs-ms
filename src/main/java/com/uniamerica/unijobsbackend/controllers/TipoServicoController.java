@@ -1,5 +1,7 @@
-package com.uniamerica.unijobsbackend.tipoServico;
+package com.uniamerica.unijobsbackend.controllers;
 
+import com.uniamerica.unijobsbackend.models.TipoServico;
+import com.uniamerica.unijobsbackend.services.TipoServicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
