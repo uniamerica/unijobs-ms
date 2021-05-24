@@ -19,7 +19,6 @@ public class Servico {
     @NotBlank(message = "Descrição é obrigatório")
     private String descricao;
 
-    @NotBlank(message = "Preço é obrigatório")
     private Double preco;
 
     private String miniatura;
@@ -29,6 +28,6 @@ public class Servico {
     private Integer prazo;
 
     @ManyToOne
-    @JoinColumn(name = "id_tipoServico", nullable = false)
+    @JoinColumn(name = "id_tipo_servico", nullable = false)
     private TipoServico tipoServico;
 }

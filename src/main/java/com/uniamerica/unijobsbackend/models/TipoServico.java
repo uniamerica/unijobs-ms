@@ -14,7 +14,7 @@ public class TipoServico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_tipoServico;
+    private Integer id_tipo_servico;
 
     @NotBlank(message = "O nome é obrigatório")
     private String nome;
