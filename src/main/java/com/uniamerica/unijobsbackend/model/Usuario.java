@@ -1,16 +1,20 @@
 package com.uniamerica.unijobsbackend.model;
 
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Entity
 public class Usuario implements Serializable {
-//    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
 
     @Id

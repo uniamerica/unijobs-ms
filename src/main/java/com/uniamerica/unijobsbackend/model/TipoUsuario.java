@@ -16,7 +16,7 @@ public class TipoUsuario {
     @Column(nullable = false)
     private String nome;
 
-    @OneToMany
-    private List<Usuario>usuarios;
+//    @OneToMany
+//    private List<Usuario>usuarios;
 
 }

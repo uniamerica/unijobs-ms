@@ -6,7 +6,10 @@ import com.uniamerica.unijobsbackend.repository.TipoUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,11 +34,24 @@ public class TipoUsuarioController {
         }
         return ResponseEntity.ok(user.get());
     }
-    @PostMapping("/{id}")
-    public ResponseEntity<TipoUsuario> criarTipoUsuario(@RequestBody TipoUsuario t_user){
-        TipoUsuario saved = tipoUsuarioRepository.save(t_user);
-        return new ResponseEntity<TipoUsuario>(saved, HttpStatus.CREATED);
+
+    @RequestMapping(value="/cadastrar_tipoUsuario", method=RequestMethod.POST)
+    public String form(@Validated TipoUsuario tipoUsuario, BindingResult result, RedirectAttributes attributes){
+        if(result.hasErrors()){
+            attributes.addFlashAttribute("mensagem", "Verifique os campos!");
+            return "redirect:/cadastrar_tipoUsuario";
+        }
+
+        tipoUsuarioRepository.save(tipoUsuario);
+        attributes.addFlashAttribute("mensagem", "TipoUsuario cadastrado com sucesso!");
+        return "redirect:/cadastrar_tipoUsuario";
     }
+//    @PostMapping("/{id}")
+//    public ResponseEntity<TipoUsuario> criarTipoUsuario(@RequestBody TipoUsuario t_user){
+//        TipoUsuario saved = tipoUsuarioRepository.save(t_user);
+//        return new ResponseEntity<TipoUsuario>(saved, HttpStatus.CREATED);
+//    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<TipoUsuario> removerTipoUsuario(@PathVariable Integer id){
         Optional<TipoUsuario> t_user = tipoUsuarioRepository.findById(id);
