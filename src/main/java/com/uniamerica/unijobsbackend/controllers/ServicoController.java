@@ -29,7 +29,6 @@ public class ServicoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Servico cadastrar(@Valid @RequestBody Servico servico){
-        System.out.println(servico);
         return servicoService.store(servico);
     }
 

@@ -1,5 +1,6 @@
 package com.uniamerica.unijobsbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class TipoServico {
     @NotBlank(message = "A Descrição é obrigatória")
     private String descricao;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "tipoServico")
     private List<Servico> servico = new ArrayList<>();
 

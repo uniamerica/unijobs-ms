@@ -50,6 +50,27 @@ public class ServicoService {
         if (novoServico.getDescricao() != null && !Objects.equals(servico.getDescricao(), novoServico.getDescricao())){
             servico.setDescricao(novoServico.getDescricao());
         }
+
+        if (novoServico.getMiniatura() != null && !Objects.equals(servico.getMiniatura(), novoServico.getMiniatura())){
+            servico.setMiniatura(novoServico.getMiniatura());
+        }
+
+        if (novoServico.getPrazo() != null && !Objects.equals(servico.getPrazo(), novoServico.getPrazo())){
+            servico.setPrazo(novoServico.getPrazo());
+        }
+
+        if (novoServico.getPreco() != null && !Objects.equals(servico.getPreco(), novoServico.getPreco())){
+            servico.setPreco(novoServico.getPreco());
+        }
+
+        if (novoServico.getTipoServico() != null && !Objects.equals(servico.getTipoServico(), novoServico.getTipoServico())){
+            servico.setTipoServico(novoServico.getTipoServico());
+        }
+
+        if (!Objects.equals(servico.isAtivo(), novoServico.isAtivo())){
+            servico.setAtivo(novoServico.isAtivo());
+        }
+
         return servico;
     }
 }
