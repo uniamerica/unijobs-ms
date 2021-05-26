@@ -35,22 +35,12 @@ public class TipoUsuarioController {
         return ResponseEntity.ok(user.get());
     }
 
-    @RequestMapping(value="/cadastrar_tipoUsuario", method=RequestMethod.POST)
-    public String form(@Validated TipoUsuario tipoUsuario, BindingResult result, RedirectAttributes attributes){
-        if(result.hasErrors()){
-            attributes.addFlashAttribute("mensagem", "Verifique os campos!");
-            return "redirect:/cadastrar_tipoUsuario";
-        }
 
-        tipoUsuarioRepository.save(tipoUsuario);
-        attributes.addFlashAttribute("mensagem", "TipoUsuario cadastrado com sucesso!");
-        return "redirect:/cadastrar_tipoUsuario";
+    @PostMapping
+    public ResponseEntity<TipoUsuario> criarTipoUsuario(@RequestBody TipoUsuario t_user){
+        TipoUsuario saved = tipoUsuarioRepository.save(t_user);
+        return new ResponseEntity<TipoUsuario>(saved, HttpStatus.CREATED);
     }
-//    @PostMapping("/{id}")
-//    public ResponseEntity<TipoUsuario> criarTipoUsuario(@RequestBody TipoUsuario t_user){
-//        TipoUsuario saved = tipoUsuarioRepository.save(t_user);
-//        return new ResponseEntity<TipoUsuario>(saved, HttpStatus.CREATED);
-//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<TipoUsuario> removerTipoUsuario(@PathVariable Integer id){
