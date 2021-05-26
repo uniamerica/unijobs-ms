@@ -1,5 +1,6 @@
 package com.uniamerica.unijobsbackend.controller;
 
+import com.uniamerica.unijobsbackend.dto.UsuarioDto;
 import com.uniamerica.unijobsbackend.model.Usuario;
 import com.uniamerica.unijobsbackend.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -19,25 +21,23 @@ public class UsuarioController {
     private UsuarioRepository usuarioRepository;
 
     @GetMapping
-    public ResponseEntity<List<Usuario>>BuscarTodos(){
-        return ResponseEntity.ok(usuarioRepository.findAll());
+    public ResponseEntity<List<UsuarioDto>>BuscarTodos(){
+        List<UsuarioDto> usuarios = usuarioRepository.findAll()
+                .stream().map(user->new UsuarioDto(user)).collect(Collectors.toList());
+        return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarUsuario(@PathVariable Integer id){
+    public ResponseEntity<UsuarioDto> buscarUsuario(@PathVariable Integer id){
         Optional<Usuario> user = usuarioRepository.findById(id);
         if (user.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(user.get());
+        return ResponseEntity.ok(new UsuarioDto(user.get()));
     }
-    @PostMapping("/{id}")
-    public ResponseEntity<Usuario> criarUsuario(@RequestBody Usuario user){
-        Usuario saved = usuarioRepository.save(user);
-        return new ResponseEntity<Usuario>(saved, HttpStatus.CREATED);
-    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable Integer id, @RequestBody Usuario usuario){
+    public ResponseEntity<UsuarioDto> atualizarUsuario(@PathVariable Integer id, @RequestBody Usuario usuario){
         Optional<Usuario> user = usuarioRepository.findById(id);
         if (user.isEmpty()) {
             return  ResponseEntity.notFound().build();
@@ -49,11 +49,11 @@ public class UsuarioController {
         saved.setCelular(usuario.getCelular());
         saved.setRa(usuario.getCelular());
         saved = usuarioRepository.save(saved);
-        return ResponseEntity.ok(saved);
+        return ResponseEntity.ok(new UsuarioDto(saved));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Usuario> removerUsuario(@PathVariable Integer id){
+    public ResponseEntity<Void> removerUsuario(@PathVariable Integer id){
         Optional<Usuario> user = usuarioRepository.findById(id);
         if (user.isEmpty()){
             return ResponseEntity.notFound().build();

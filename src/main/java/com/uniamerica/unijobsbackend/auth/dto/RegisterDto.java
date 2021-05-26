@@ -6,7 +6,7 @@ import lombok.Data;
 
 import javax.persistence.Column;
 @Data
-public class NovoUsuario {
+public class RegisterDto {
     @NotNull
     private String email;
     @NotNull
