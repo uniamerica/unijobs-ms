@@ -1,6 +1,6 @@
 package com.uniamerica.unijobsbackend.produto;
 
-import com.uniamerica.unijobsbackend.tipoProduto.tipoProduto;
+import com.uniamerica.unijobsbackend.tipoProduto.TipoProduto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,20 +23,17 @@ public class Produto {
     @NotBlank(message = "A descrição é obrigatória.")
     private String descricao;
 
-    @NotBlank(message = "O Preço é obrigatório.")
     private Double preco;
 
-    @NotBlank(message = "É obrigatório adicionar uma imagem do produto.")
     private String miniatura;
 
     private Boolean ativo;
 
-    @NotBlank(message = "O Prazo é obrigatório.")
     private Integer prazo;
 
     private Integer id_usuario;
 
     @ManyToOne
-    @NotBlank(message = "A categoria do Produto é obrigatória.")
-    private tipoProduto tipoProduto;
+    @JoinColumn(name = "id_tipo_produto")
+    private TipoProduto tipoProduto;
 }

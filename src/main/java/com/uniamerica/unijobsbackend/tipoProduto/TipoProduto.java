@@ -14,10 +14,10 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Data
 @Entity
-public class tipoProduto {
+public class TipoProduto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_tipoProduto;
+    private Integer id_tipo_produto;
 
     @NotBlank(message = "O nome é obrigatório.")
     private String nome;
