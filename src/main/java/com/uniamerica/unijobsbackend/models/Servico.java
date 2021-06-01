@@ -1,5 +1,6 @@
 package com.uniamerica.unijobsbackend.models;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import lombok.Data;
 
 import javax.persistence.*;

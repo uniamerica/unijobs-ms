@@ -2,6 +2,8 @@ package com.uniamerica.unijobsbackend.controllers;
 
 import com.uniamerica.unijobsbackend.models.TipoServico;
 import com.uniamerica.unijobsbackend.services.TipoServicoService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@OpenAPIDefinition
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/tiposServicos")
 public class TipoServicoController {
 

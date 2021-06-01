@@ -3,6 +3,8 @@ package com.uniamerica.unijobsbackend.controllers;
 import com.uniamerica.unijobsbackend.dto.ServicoDTO;
 import com.uniamerica.unijobsbackend.models.Servico;
 import com.uniamerica.unijobsbackend.services.ServicoService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@OpenAPIDefinition
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/servicos")
 public class ServicoController {
     

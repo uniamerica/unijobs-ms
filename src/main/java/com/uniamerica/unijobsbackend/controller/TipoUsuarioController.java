@@ -3,6 +3,8 @@ package com.uniamerica.unijobsbackend.controller;
 import com.uniamerica.unijobsbackend.model.TipoUsuario;
 import com.uniamerica.unijobsbackend.model.Usuario;
 import com.uniamerica.unijobsbackend.repository.TipoUsuarioRepository;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@OpenAPIDefinition
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/tipo_usuarios")
 public class TipoUsuarioController {
 
