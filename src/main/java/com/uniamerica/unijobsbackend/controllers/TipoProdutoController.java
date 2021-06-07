@@ -3,9 +3,11 @@ package com.uniamerica.unijobsbackend.controllers;
 import com.uniamerica.unijobsbackend.services.TipoProdutoService;
 import com.uniamerica.unijobsbackend.models.TipoProduto;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,23 +22,27 @@ public class TipoProdutoController {
     private TipoProdutoService tipoProdutoService;
 
     @GetMapping
+    @Operation(summary = "Retorna uma lista de Categorias de Produto.")
     public List<TipoProduto> visualizar(){
         return tipoProdutoService.VisualizarTipoProduto() ;
     }
 
     @PostMapping
+    @Operation(summary = "Cadastra uma Categoria de Produto.")
     @ResponseStatus(HttpStatus.CREATED)
     public TipoProduto cadastrar(@Valid @RequestBody TipoProduto tipoProduto){
         return tipoProdutoService.CadastrarTipoProduto(tipoProduto);
     }
 
     @PutMapping(path = "{id_tipoProduto}")
+    @Operation(summary = "Edita uma Categoria de Produto.")
     @ResponseStatus(HttpStatus.OK)
     public TipoProduto editar(@Valid @RequestBody TipoProduto novoTipoProduto, @PathVariable("id_tipoProduto") Integer id_tipoProduto){
         return tipoProdutoService.EditarTipoProduto(id_tipoProduto, novoTipoProduto);
     }
 
     @DeleteMapping(path = "{id_tipoProduto}")
+    @Operation(summary = "Deleta uma Categoria de Produto.")
     @ResponseStatus(HttpStatus.OK)
     public String deletar(@PathVariable("id_tipoProduto") Integer id_tipoProduto){
         return tipoProdutoService.DeletarTipoProduto(id_tipoProduto);

@@ -3,12 +3,22 @@ package com.uniamerica.unijobsbackend.controllers;
 import com.uniamerica.unijobsbackend.models.TipoUsuario;
 import com.uniamerica.unijobsbackend.repositories.TipoUsuarioRepository;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,11 +31,19 @@ public class TipoUsuarioController {
     @Autowired
     private TipoUsuarioRepository tipoUsuarioRepository;
 
+    @Operation(summary = "listar todos usuarios", responses = {
+            @ApiResponse(responseCode = "200", description = "Successful Operation",content = @Content(
+                    mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TipoUsuario.class)))),
+            @ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true))) })
     @GetMapping
     public ResponseEntity<List<TipoUsuario>> BuscarTodos(){
         return ResponseEntity.ok(tipoUsuarioRepository.findAll());
     }
 
+    @Operation(summary = "Get thing", responses = {
+            @ApiResponse(description = "Successful Operation", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TipoUsuario.class))),
+            @ApiResponse(responseCode = "404", description = "Not found", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true))) })
     @GetMapping("/{id}")
     public ResponseEntity<TipoUsuario> buscarTipoUsuario(@PathVariable Integer id){
         Optional<TipoUsuario> user = tipoUsuarioRepository.findById(id);

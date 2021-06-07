@@ -1,10 +1,12 @@
 package com.uniamerica.unijobsbackend.models;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
+
+@RequiredArgsConstructor
 @Entity
 @Data
 public class TipoUsuario {

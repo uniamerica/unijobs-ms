@@ -1,5 +1,6 @@
 package com.uniamerica.unijobsbackend.services;
 
+import com.uniamerica.unijobsbackend.Excessoes.RecursoNaoEncontradoExcessao;
 import com.uniamerica.unijobsbackend.models.Produto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioProduto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class ProdutoService {
     public String DeletarProduto(Integer id) {
         boolean existe = repositorioProduto.existsById(id);
         if(!existe){
-            throw new IllegalStateException("Produto não Existe. id: " + id);
+            throw new RecursoNaoEncontradoExcessao("Produto não Existe. id: " + id);
         }
         repositorioProduto.deleteById(id);
         return "Produto deletado com sucesso!";

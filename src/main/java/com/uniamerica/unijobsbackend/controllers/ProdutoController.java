@@ -1,8 +1,10 @@
 package com.uniamerica.unijobsbackend.controllers;
 
 import com.uniamerica.unijobsbackend.models.Produto;
+import com.uniamerica.unijobsbackend.dto.NovoProdutoDTO;
 import com.uniamerica.unijobsbackend.services.ProdutoService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,23 +22,27 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @GetMapping
+    @Operation(summary = "Retorna uma lista de Produtos")
     public List<Produto> visualizar(){
         return produtoService.VisualizarProduto() ;
     }
 
     @PostMapping
+    @Operation(summary = "Cadastra um Produto.")
     @ResponseStatus(HttpStatus.CREATED)
-    public Produto cadastrar(@Valid @RequestBody Produto produto){
-        return produtoService.CadastrarProduto(produto);
+    public Produto cadastrar(@Valid @RequestBody NovoProdutoDTO produto){
+        return produtoService.CadastrarProduto(produto.converteModelo());
     }
 
     @PutMapping(path = "{id_produto}")
+    @Operation(summary = "Edita um Produto")
     @ResponseStatus(HttpStatus.OK)
     public Produto editar(@Valid @RequestBody Produto novoProduto, @PathVariable("id_produto") Integer id_produto){
         return produtoService.EditarProduto(id_produto, novoProduto);
     }
 
     @DeleteMapping(path = "{id_produto}")
+    @Operation(summary = "Deleta um Produto.")
     @ResponseStatus(HttpStatus.OK)
     public String deletar(@PathVariable("id_produto") Integer id_produto){
         return produtoService.DeletarProduto(id_produto);

@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,10 +16,8 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_produto;
 
-    @NotBlank(message = "O Título é obrigatório.")
     private String titulo;
 
-    @NotBlank(message = "A descrição é obrigatória.")
     private String descricao;
 
     private Double preco;
