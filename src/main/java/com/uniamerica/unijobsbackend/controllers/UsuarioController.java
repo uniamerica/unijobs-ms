@@ -1,14 +1,12 @@
-package com.uniamerica.unijobsbackend.controller;
+package com.uniamerica.unijobsbackend.controllers;
 
 import com.uniamerica.unijobsbackend.dto.UsuarioDto;
-import com.uniamerica.unijobsbackend.model.Usuario;
-import com.uniamerica.unijobsbackend.repository.UsuarioRepository;
+import com.uniamerica.unijobsbackend.models.Usuario;
+import com.uniamerica.unijobsbackend.repositories.UsuarioRepository;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

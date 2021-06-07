@@ -1,5 +1,7 @@
-package com.uniamerica.unijobsbackend.produto;
+package com.uniamerica.unijobsbackend.services;
 
+import com.uniamerica.unijobsbackend.models.Produto;
+import com.uniamerica.unijobsbackend.repositories.RepositorioProduto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

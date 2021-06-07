@@ -1,4 +1,4 @@
-package com.uniamerica.unijobsbackend.tipoProduto;
+package com.uniamerica.unijobsbackend.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

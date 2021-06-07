@@ -1,7 +1,7 @@
 package com.uniamerica.unijobsbackend.auth.services;
 
 import com.uniamerica.unijobsbackend.auth.model.UserSecurity;
-import com.uniamerica.unijobsbackend.repository.UsuarioRepository;
+import com.uniamerica.unijobsbackend.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

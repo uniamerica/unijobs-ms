@@ -1,5 +1,6 @@
-package com.uniamerica.unijobsbackend.tipoProduto;
+package com.uniamerica.unijobsbackend.dto;
 
+import com.uniamerica.unijobsbackend.models.TipoProduto;
 import lombok.Data;
 
 import java.util.ArrayList;

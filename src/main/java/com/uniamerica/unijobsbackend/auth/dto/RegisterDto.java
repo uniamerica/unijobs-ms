@@ -1,10 +1,9 @@
 package com.uniamerica.unijobsbackend.auth.dto;
 
 import com.sun.istack.NotNull;
-import com.uniamerica.unijobsbackend.model.Usuario;
+import com.uniamerica.unijobsbackend.models.Usuario;
 import lombok.Data;
 
-import javax.persistence.Column;
 @Data
 public class RegisterDto {
     @NotNull

@@ -1,10 +1,11 @@
-package com.uniamerica.unijobsbackend.tipoProduto;
+package com.uniamerica.unijobsbackend.controllers;
 
+import com.uniamerica.unijobsbackend.services.TipoProdutoService;
+import com.uniamerica.unijobsbackend.models.TipoProduto;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

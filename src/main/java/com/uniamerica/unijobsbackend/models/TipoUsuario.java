@@ -1,4 +1,4 @@
-package com.uniamerica.unijobsbackend.model;
+package com.uniamerica.unijobsbackend.models;
 
 import lombok.Data;
 

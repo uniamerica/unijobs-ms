@@ -1,6 +1,6 @@
 package com.uniamerica.unijobsbackend.auth.model;
 
-import com.uniamerica.unijobsbackend.model.Usuario;
+import com.uniamerica.unijobsbackend.models.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

@@ -1,8 +1,7 @@
 package com.uniamerica.unijobsbackend.dto;
 
-import com.uniamerica.unijobsbackend.model.Usuario;
+import com.uniamerica.unijobsbackend.models.Usuario;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class UsuarioDto {

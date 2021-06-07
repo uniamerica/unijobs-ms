@@ -1,7 +1,6 @@
-package com.uniamerica.unijobsbackend.repository;
+package com.uniamerica.unijobsbackend.repositories;
 
-import com.fasterxml.jackson.annotation.OptBoolean;
-import com.uniamerica.unijobsbackend.model.Usuario;
+import com.uniamerica.unijobsbackend.models.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

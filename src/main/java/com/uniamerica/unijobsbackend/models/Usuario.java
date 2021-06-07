@@ -1,10 +1,9 @@
-package com.uniamerica.unijobsbackend.model;
+package com.uniamerica.unijobsbackend.models;
 
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.io.Serializable;

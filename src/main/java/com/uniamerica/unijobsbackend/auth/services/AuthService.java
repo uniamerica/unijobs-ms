@@ -1,10 +1,9 @@
 package com.uniamerica.unijobsbackend.auth.services;
 
 import com.uniamerica.unijobsbackend.auth.config.JwtTokenUtil;
-import com.uniamerica.unijobsbackend.model.Usuario;
-import com.uniamerica.unijobsbackend.repository.UsuarioRepository;
+import com.uniamerica.unijobsbackend.models.Usuario;
+import com.uniamerica.unijobsbackend.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;

@@ -1,5 +1,7 @@
-package com.uniamerica.unijobsbackend.tipoProduto;
+package com.uniamerica.unijobsbackend.services;
 
+import com.uniamerica.unijobsbackend.repositories.RepositorioTipoProduto;
+import com.uniamerica.unijobsbackend.models.TipoProduto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +13,7 @@ import java.util.Optional;
 @Service
 public class TipoProdutoService {
     @Autowired
-    private final com.uniamerica.unijobsbackend.tipoProduto.RepositorioTipoProduto repositorioTipoProduto;
+    private final RepositorioTipoProduto repositorioTipoProduto;
 
     public TipoProdutoService(RepositorioTipoProduto repositorioTipoProduto) {
         this.repositorioTipoProduto = repositorioTipoProduto;

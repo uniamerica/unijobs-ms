@@ -1,6 +1,6 @@
-package com.uniamerica.unijobsbackend.produto;
+package com.uniamerica.unijobsbackend.models;
 
-import com.uniamerica.unijobsbackend.tipoProduto.TipoProduto;
+import com.uniamerica.unijobsbackend.models.TipoProduto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

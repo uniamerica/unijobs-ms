@@ -1,6 +1,6 @@
-package com.uniamerica.unijobsbackend.repository;
+package com.uniamerica.unijobsbackend.repositories;
 
-import com.uniamerica.unijobsbackend.model.TipoUsuario;
+import com.uniamerica.unijobsbackend.models.TipoUsuario;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
