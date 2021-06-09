@@ -1,7 +1,7 @@
 package com.uniamerica.unijobsbackend.controllers;
 
 import com.uniamerica.unijobsbackend.models.Produto;
-import com.uniamerica.unijobsbackend.dto.NovoProdutoDTO;
+import com.uniamerica.unijobsbackend.dto.input.NovoProdutoDTO;
 import com.uniamerica.unijobsbackend.services.ProdutoService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;

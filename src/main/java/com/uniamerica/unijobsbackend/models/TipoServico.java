@@ -3,6 +3,7 @@ package com.uniamerica.unijobsbackend.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "tipos_servico")
 public class TipoServico {
 
@@ -33,7 +35,7 @@ public class TipoServico {
         this.descricao = descricao;
     }
 
-    public TipoServico() {
-
+    public TipoServico(Integer id_tipo_servico) {
+        this.id_tipo_servico = id_tipo_servico;
     }
 }

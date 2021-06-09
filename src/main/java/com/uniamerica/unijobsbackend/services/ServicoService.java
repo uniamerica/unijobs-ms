@@ -1,13 +1,17 @@
 package com.uniamerica.unijobsbackend.services;
 
+import com.uniamerica.unijobsbackend.Excessoes.RecursoNaoEncontradoExcessao;
 import com.uniamerica.unijobsbackend.dto.ServicoDTO;
 import com.uniamerica.unijobsbackend.models.Servico;
 import com.uniamerica.unijobsbackend.models.Servico;
+import com.uniamerica.unijobsbackend.models.TipoServico;
 import com.uniamerica.unijobsbackend.repositories.ServicoRepository;
 import com.uniamerica.unijobsbackend.repositories.ServicoRepository;
+import com.uniamerica.unijobsbackend.repositories.TipoServicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.config.web.servlet.oauth2.resourceserver.OAuth2ResourceServerSecurityMarker;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,56 +24,48 @@ public class ServicoService {
     @Autowired
     private ServicoRepository repository;
 
+    @Autowired
+    private TipoServicoRepository tipoServicoRepository;
+
     public Page<ServicoDTO> findAll(Pageable pageable){
         Page<Servico> servicos = repository.findAll(pageable);
         return servicos.map(x -> new ServicoDTO(x));
     }
-
     public Servico store(Servico servico) {
+        Integer id_tipo_servico = servico.getTipoServico().getId_tipo_servico();
+
+        var tipoServico =tipoServicoRepository.findById(id_tipo_servico)
+                .orElseThrow(
+                        () -> new RecursoNaoEncontradoExcessao("Tipo Serviço não Encontrado! id:" + id_tipo_servico)
+                );
+        servico.setTipoServico(tipoServico);
+
         return repository.save(servico);
     }
 
     public String destroy(Integer id) {
-        boolean existe = repository.existsById(id);
-        if(!existe){
-            throw new IllegalStateException("Serviço não Existe. id: " + id);
-        }
+        repository.findById(id).orElseThrow(RecursoNaoEncontradoExcessao::new);
         repository.deleteById(id);
         return "Serviço deletado com sucesso!";
     }
 
     @Transactional
     public Servico update(Integer id, Servico novoServico) {
-        Servico servico = repository.findById(id)
+        var servico = repository.findById(id).orElseThrow(RecursoNaoEncontradoExcessao::new);
+
+        Integer id_tipo_servico = novoServico.getTipoServico().getId_tipo_servico();
+        var tipoServico = tipoServicoRepository.findById(id_tipo_servico)
                 .orElseThrow(
-                        () -> new IllegalStateException("Serviço não Existe. id: " + id)
+                        () -> new RecursoNaoEncontradoExcessao("Tipo Serviço não Encontrado! id:" + id_tipo_servico)
                 );
-        if(novoServico.getTitulo() != null && !Objects.equals(servico.getTitulo(), novoServico.getTitulo())){
-            servico.setTitulo(novoServico.getTitulo());
-        }
-        if (novoServico.getDescricao() != null && !Objects.equals(servico.getDescricao(), novoServico.getDescricao())){
-            servico.setDescricao(novoServico.getDescricao());
-        }
 
-        if (novoServico.getMiniatura() != null && !Objects.equals(servico.getMiniatura(), novoServico.getMiniatura())){
-            servico.setMiniatura(novoServico.getMiniatura());
-        }
-
-        if (novoServico.getPrazo() != null && !Objects.equals(servico.getPrazo(), novoServico.getPrazo())){
-            servico.setPrazo(novoServico.getPrazo());
-        }
-
-        if (novoServico.getPreco() != null && !Objects.equals(servico.getPreco(), novoServico.getPreco())){
-            servico.setPreco(novoServico.getPreco());
-        }
-
-        if (novoServico.getTipoServico() != null && !Objects.equals(servico.getTipoServico(), novoServico.getTipoServico())){
-            servico.setTipoServico(novoServico.getTipoServico());
-        }
-
-        if (!Objects.equals(servico.isAtivo(), novoServico.isAtivo())){
-            servico.setAtivo(novoServico.isAtivo());
-        }
+        servico.setTitulo(novoServico.getTitulo());
+        servico.setDescricao(novoServico.getDescricao());
+        servico.setMiniatura(novoServico.getMiniatura());
+        servico.setPrazo(novoServico.getPrazo());
+        servico.setPreco(novoServico.getPreco());
+        servico.setTipoServico(tipoServico);
+        servico.setAtivo(novoServico.isAtivo());
 
         return servico;
     }

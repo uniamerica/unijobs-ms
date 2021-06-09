@@ -1,5 +1,6 @@
 package com.uniamerica.unijobsbackend.controllers;
 
+import com.uniamerica.unijobsbackend.dto.input.NovoServicoDTO;
 import com.uniamerica.unijobsbackend.dto.ServicoDTO;
 import com.uniamerica.unijobsbackend.models.Servico;
 import com.uniamerica.unijobsbackend.services.ServicoService;
@@ -13,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @OpenAPIDefinition
@@ -32,14 +32,14 @@ public class ServicoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Servico cadastrar(@Valid @RequestBody Servico servico){
-        return servicoService.store(servico);
+    public Servico cadastrar(@Valid @RequestBody NovoServicoDTO servico){
+        return servicoService.store(servico.converteModelo());
     }
 
     @PutMapping(path = "{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Servico atualizar(@Valid @RequestBody Servico novoServico, @PathVariable("id") Integer id){
-        return servicoService.update( id, novoServico);
+    public Servico atualizar(@Valid @RequestBody NovoServicoDTO novoServico, @PathVariable("id") Integer id){
+        return servicoService.update( id, novoServico.converteModelo());
     }
 
     @DeleteMapping(path = "{id}")

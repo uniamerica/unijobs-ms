@@ -14,10 +14,8 @@ public class Servico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_servico;
 
-    @NotBlank(message = "Titulo é obrigatório")
     private String titulo;
 
-    @NotBlank(message = "Descrição é obrigatório")
     private String descricao;
 
     private Double preco;
@@ -28,7 +26,7 @@ public class Servico {
 
     private Integer prazo;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "id_tipo_servico", nullable = false)
     private TipoServico tipoServico;
 }

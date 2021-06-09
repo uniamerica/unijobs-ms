@@ -1,4 +1,4 @@
-package com.uniamerica.unijobsbackend.dto;
+package com.uniamerica.unijobsbackend.dto.input;
 
 import com.uniamerica.unijobsbackend.models.Produto;
 import lombok.Data;
