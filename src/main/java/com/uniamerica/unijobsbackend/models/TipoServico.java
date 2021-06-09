@@ -1,18 +1,19 @@
 package com.uniamerica.unijobsbackend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
-@NoArgsConstructor
 @Table(name = "tipos_servico")
 public class TipoServico {
 
@@ -28,6 +29,7 @@ public class TipoServico {
 
     @JsonIgnore
     @OneToMany(mappedBy = "tipoServico")
+    @ToString.Exclude
     private List<Servico> servico = new ArrayList<>();
 
     public TipoServico(String nome, String descricao) {
@@ -37,5 +39,19 @@ public class TipoServico {
 
     public TipoServico(Integer id_tipo_servico) {
         this.id_tipo_servico = id_tipo_servico;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        TipoServico that = (TipoServico) o;
+
+        return id_tipo_servico != null && id_tipo_servico.equals(that.id_tipo_servico);
+    }
+
+    @Override
+    public int hashCode() {
+        return 1145590354;
     }
 }

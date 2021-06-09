@@ -29,18 +29,18 @@ public class ServicoService {
 
     public Page<ServicoDTO> findAll(Pageable pageable){
         Page<Servico> servicos = repository.findAll(pageable);
-        return servicos.map(x -> new ServicoDTO(x));
+        return servicos.map(ServicoDTO::new);
     }
-    public Servico store(Servico servico) {
+    public ServicoDTO store(Servico servico) {
         Integer id_tipo_servico = servico.getTipoServico().getId_tipo_servico();
 
-        var tipoServico =tipoServicoRepository.findById(id_tipo_servico)
+        var tipoServico = tipoServicoRepository.findById(id_tipo_servico)
                 .orElseThrow(
                         () -> new RecursoNaoEncontradoExcessao("Tipo Serviço não Encontrado! id:" + id_tipo_servico)
                 );
         servico.setTipoServico(tipoServico);
 
-        return repository.save(servico);
+        return new ServicoDTO(repository.save(servico));
     }
 
     public String destroy(Integer id) {
@@ -50,7 +50,7 @@ public class ServicoService {
     }
 
     @Transactional
-    public Servico update(Integer id, Servico novoServico) {
+    public ServicoDTO update(Integer id, Servico novoServico) {
         var servico = repository.findById(id).orElseThrow(RecursoNaoEncontradoExcessao::new);
 
         Integer id_tipo_servico = novoServico.getTipoServico().getId_tipo_servico();
@@ -67,6 +67,10 @@ public class ServicoService {
         servico.setTipoServico(tipoServico);
         servico.setAtivo(novoServico.isAtivo());
 
-        return servico;
+        return new ServicoDTO(servico);
+    }
+
+    public ServicoDTO find(Integer id) {
+        return new ServicoDTO(repository.findById(id).orElseThrow(RecursoNaoEncontradoExcessao::new));
     }
 }

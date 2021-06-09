@@ -26,20 +26,24 @@ public class ServicoController {
 
     @GetMapping
     public ResponseEntity<Page<ServicoDTO>> findAll(Pageable pageable){
-        Page<ServicoDTO> lista = servicoService.findAll(pageable);
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.ok(servicoService.findAll(pageable));
+    }
+
+    @GetMapping(path = "{id}")
+    public ResponseEntity<ServicoDTO> find(@PathVariable("id") Integer id){
+        return ResponseEntity.ok(servicoService.find(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Servico cadastrar(@Valid @RequestBody NovoServicoDTO servico){
-        return servicoService.store(servico.converteModelo());
+    public ResponseEntity<ServicoDTO> cadastrar(@Valid @RequestBody NovoServicoDTO servico){
+        return ResponseEntity.ok(servicoService.store(servico.converteModelo()));
     }
 
     @PutMapping(path = "{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Servico atualizar(@Valid @RequestBody NovoServicoDTO novoServico, @PathVariable("id") Integer id){
-        return servicoService.update( id, novoServico.converteModelo());
+    public ResponseEntity<ServicoDTO> atualizar(@Valid @RequestBody NovoServicoDTO novoServico, @PathVariable("id") Integer id){
+        return ResponseEntity.ok(servicoService.update( id, novoServico.converteModelo()));
     }
 
     @DeleteMapping(path = "{id}")

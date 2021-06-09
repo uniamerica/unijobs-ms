@@ -1,12 +1,14 @@
 package com.uniamerica.unijobsbackend.models;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "servicos")
 public class Servico {
@@ -29,4 +31,18 @@ public class Servico {
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "id_tipo_servico", nullable = false)
     private TipoServico tipoServico;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Servico servico = (Servico) o;
+
+        return id_servico != null && id_servico.equals(servico.id_servico);
+    }
+
+    @Override
+    public int hashCode() {
+        return 1228432928;
+    }
 }
