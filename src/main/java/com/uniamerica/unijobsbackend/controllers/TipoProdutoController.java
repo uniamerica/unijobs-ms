@@ -1,10 +1,15 @@
 package com.uniamerica.unijobsbackend.controllers;
 
+import com.uniamerica.unijobsbackend.dto.ListaProdutoDTO;
+import com.uniamerica.unijobsbackend.dto.ListaTipoProdutoDTO;
+import com.uniamerica.unijobsbackend.dto.NovoTipoProdutoDTO;
+import com.uniamerica.unijobsbackend.models.Produto;
 import com.uniamerica.unijobsbackend.services.TipoProdutoService;
 import com.uniamerica.unijobsbackend.models.TipoProduto;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping({"/tipos_produtos"})
@@ -21,17 +27,23 @@ public class TipoProdutoController {
     @Autowired
     private TipoProdutoService tipoProdutoService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @GetMapping
     @Operation(summary = "Retorna uma lista de Categorias de Produto.")
-    public List<TipoProduto> visualizar(){
-        return tipoProdutoService.VisualizarTipoProduto() ;
+    public List<ListaTipoProdutoDTO> visualizar(){
+        return tipoProdutoService.VisualizarTipoProduto()
+                .stream()
+                .map(this::toListaTipoProdutoDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping
     @Operation(summary = "Cadastra uma Categoria de Produto.")
     @ResponseStatus(HttpStatus.CREATED)
-    public TipoProduto cadastrar(@Valid @RequestBody TipoProduto tipoProduto){
-        return tipoProdutoService.CadastrarTipoProduto(tipoProduto);
+    public TipoProduto cadastrar(@Valid @RequestBody NovoTipoProdutoDTO tipoProduto){
+        return tipoProdutoService.CadastrarTipoProduto(tipoProduto.converteModelo());
     }
 
     @PutMapping(path = "{id_tipoProduto}")
@@ -48,47 +60,7 @@ public class TipoProdutoController {
         return tipoProdutoService.DeletarTipoProduto(id_tipoProduto);
     }
 
-    //-------------------------------------------------------------------------------------------------
-
-//    TipoProdutoController(RepositorioTipoProduto repositorioTipoProduto) {
-//        this.repositorioTipoProduto = repositorioTipoProduto;
-//    }
-//    // métodos do CRUD aqui
-//    @GetMapping
-//    public List<TipoProduto> visualizar(){
-//        return RepositorioTipoProduto.findAll();
-//    }
-//
-//    @GetMapping(path = {"/{id_tipoProduto}"})
-//    public ResponseEntity visualizar_por_id(@PathVariable int id_tipoProduto){
-//        return RepositorioTipoProduto.findById(id_tipoProduto)
-//                .map(record -> ResponseEntity.ok().body(record))
-//                .orElse(ResponseEntity.notFound().build());
-//    }
-//
-//    @PostMapping
-//    public TipoProduto cadastrar(@RequestBody TipoProduto tipoProduto){
-//        return RepositorioTipoProduto.save(tipoProduto);
-//    }
-//
-//    @PutMapping(value="/{id_tipoProduto}")
-//    public ResponseEntity editar(@PathVariable("id_tipoProduto") int id_tipoProduto,
-//                                 @RequestBody TipoProduto tipoProduto) {
-//        return RepositorioTipoProduto.findById(id_tipoProduto)
-//                .map(record -> {
-//                    record.setNome(tipoProduto.getNome());
-//                    record.setDescricao(tipoProduto.getDescricao());
-//                    TipoProduto edita = RepositorioTipoProduto.save(record);
-//                    return ResponseEntity.ok().body(edita);
-//                }).orElse(ResponseEntity.notFound().build());
-//    }
-//
-//    @DeleteMapping(path ={"/{id_tipoProduto}"})
-//    public ResponseEntity <?> deletar(@PathVariable int id_tipoProduto) {
-//        return RepositorioTipoProduto.findById(id_tipoProduto)
-//                .map(record -> {
-//                    RepositorioTipoProduto.deleteById(id_tipoProduto);
-//                    return ResponseEntity.ok().build();
-//                }).orElse(ResponseEntity.notFound().build());
-//    }
+    private ListaTipoProdutoDTO toListaTipoProdutoDTO(TipoProduto tipoProduto){
+        return modelMapper.map(tipoProduto, ListaTipoProdutoDTO.class);
+    }
 }

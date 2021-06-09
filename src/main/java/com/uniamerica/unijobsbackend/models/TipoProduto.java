@@ -19,9 +19,7 @@ public class TipoProduto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_tipo_produto;
 
-    @NotBlank(message = "O nome é obrigatório.")
     private String nome;
 
-    @NotBlank(message = "A descrição é obrigatória.")
     private String descricao;
 }
