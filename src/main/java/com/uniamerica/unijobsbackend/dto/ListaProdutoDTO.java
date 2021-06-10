@@ -1,5 +1,6 @@
 package com.uniamerica.unijobsbackend.dto;
 
+import com.uniamerica.unijobsbackend.models.TipoProduto;
 import lombok.Data;
 
 @Data
@@ -9,4 +10,5 @@ public class ListaProdutoDTO {
     private Double preco;
     private String miniatura;
     private Integer prazo;
+    private TipoProduto tipoProduto;
 }
