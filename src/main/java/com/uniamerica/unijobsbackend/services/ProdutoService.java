@@ -3,6 +3,7 @@ package com.uniamerica.unijobsbackend.services;
 import com.uniamerica.unijobsbackend.Excessoes.RecursoNaoEncontradoExcessao;
 import com.uniamerica.unijobsbackend.models.Produto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioProduto;
+import com.uniamerica.unijobsbackend.repositories.RepositorioTipoProduto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,12 @@ public class ProdutoService {
     @Autowired
     private final RepositorioProduto repositorioProduto;
 
-    public ProdutoService(RepositorioProduto repositorioProduto) {
+    @Autowired
+    private final RepositorioTipoProduto repositorioTipoProduto;
+
+    public ProdutoService(RepositorioProduto repositorioProduto, RepositorioTipoProduto repositorioTipoProduto) {
         this.repositorioProduto = repositorioProduto;
+        this.repositorioTipoProduto = repositorioTipoProduto;
     }
 
     public List<Produto> VisualizarProduto(){
@@ -24,6 +29,13 @@ public class ProdutoService {
     }
 
     public Produto CadastrarProduto(Produto produto) {
+        Integer id_tipo_produto = produto.getTipoProduto().getId_tipo_produto();
+
+        var produto1 = repositorioTipoProduto.findById(id_tipo_produto)
+          .orElseThrow(
+            () -> new RecursoNaoEncontradoExcessao("Categoria não Encontrada! id:" + id_tipo_produto)
+          );
+        produto.setTipoProduto(produto1);
 
         return repositorioProduto.save(produto);
     }
