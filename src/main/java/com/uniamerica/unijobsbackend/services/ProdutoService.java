@@ -24,6 +24,7 @@ public class ProdutoService {
     }
 
     public Produto CadastrarProduto(Produto produto) {
+
         return repositorioProduto.save(produto);
     }
 
