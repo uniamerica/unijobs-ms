@@ -1,5 +1,6 @@
 package com.uniamerica.unijobsbackend.controllers;
 
+import com.uniamerica.unijobsbackend.dto.input.NovoServicoDTO;
 import com.uniamerica.unijobsbackend.dto.ServicoDTO;
 import com.uniamerica.unijobsbackend.models.Servico;
 import com.uniamerica.unijobsbackend.services.ServicoService;
@@ -13,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @OpenAPIDefinition
@@ -26,20 +26,24 @@ public class ServicoController {
 
     @GetMapping
     public ResponseEntity<Page<ServicoDTO>> findAll(Pageable pageable){
-        Page<ServicoDTO> lista = servicoService.findAll(pageable);
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.ok(servicoService.findAll(pageable));
+    }
+
+    @GetMapping(path = "{id}")
+    public ResponseEntity<ServicoDTO> find(@PathVariable("id") Integer id){
+        return ResponseEntity.ok(servicoService.find(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Servico cadastrar(@Valid @RequestBody Servico servico){
-        return servicoService.store(servico);
+    public ResponseEntity<ServicoDTO> cadastrar(@Valid @RequestBody NovoServicoDTO servico){
+        return ResponseEntity.ok(servicoService.store(servico.converteModelo()));
     }
 
     @PutMapping(path = "{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Servico atualizar(@Valid @RequestBody Servico novoServico, @PathVariable("id") Integer id){
-        return servicoService.update( id, novoServico);
+    public ResponseEntity<ServicoDTO> atualizar(@Valid @RequestBody NovoServicoDTO novoServico, @PathVariable("id") Integer id){
+        return ResponseEntity.ok(servicoService.update( id, novoServico.converteModelo()));
     }
 
     @DeleteMapping(path = "{id}")

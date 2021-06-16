@@ -13,10 +13,10 @@ public class TipoServicoConfig {
     @Bean
     CommandLineRunner commandLineRunner(TipoServicoRepository repository){
         return args -> {
-            TipoServico informatica = new TipoServico("Informatica", "Serviõs relacionados a informática");
-            TipoServico gastronomia = new TipoServico("Gastronomia", "Serviços relacionados a comida");
-
-            repository.saveAll(List.of(informatica, gastronomia));
+//            TipoServico informatica = new TipoServico("Informatica", "Serviõs relacionados a informática");
+//            TipoServico gastronomia = new TipoServico("Gastronomia", "Serviços relacionados a comida");
+//
+//            repository.saveAll(List.of(informatica, gastronomia));
         };
     }
 }
