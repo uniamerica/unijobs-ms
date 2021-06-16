@@ -1,5 +1,6 @@
 package com.uniamerica.unijobsbackend.auth.services;
 
+import com.uniamerica.unijobsbackend.Excessoes.RegraNegocioExcessao;
 import com.uniamerica.unijobsbackend.auth.config.JwtTokenUtil;
 import com.uniamerica.unijobsbackend.models.Usuario;
 import com.uniamerica.unijobsbackend.repositories.UsuarioRepository;
@@ -27,7 +28,7 @@ public class AuthService {
     public Usuario register(Usuario usuario) throws Exception {
         Optional<Usuario> user = usuarioRepository.findByEmail(usuario.getEmail());
         if (user.isPresent()) {
-            throw new Exception("Ja existe usuario cadastrado com este e-mail!");
+            throw new RegraNegocioExcessao("Ja existe usuario cadastrado com este e-mail!");
         } else {
             usuario.setSenha(bcryptEncoder.encode(usuario.getSenha()));
             return usuarioRepository.save(usuario);

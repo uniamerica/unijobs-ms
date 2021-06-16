@@ -47,4 +47,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         return ResponseEntity.status(statusHttp).body(corpo);
     }
+
+  @ExceptionHandler(RegraNegocioExcessao.class)
+  public ResponseEntity<RespostaApi> trataRegraNegocioExcessao(RegraNegocioExcessao ex, WebRequest request){
+    var statusHttp = HttpStatus.CONFLICT;
+    var timestamp = LocalDateTime.now();
+    var titulo = ex.getMessage();
+    var path = request.getDescription(false).substring(5);
+    var corpo = new RespostaApi(statusHttp.value(), timestamp, titulo, path);
+
+    return ResponseEntity.status(statusHttp).body(corpo);
+  }
 }
