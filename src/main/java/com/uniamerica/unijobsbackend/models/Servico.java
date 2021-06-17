@@ -9,6 +9,8 @@ import javax.persistence.*;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "servicos")
 public class Servico {

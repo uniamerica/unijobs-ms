@@ -8,6 +8,7 @@ import com.uniamerica.unijobsbackend.models.TipoServico;
 import com.uniamerica.unijobsbackend.repositories.ServicoRepository;
 import com.uniamerica.unijobsbackend.repositories.ServicoRepository;
 import com.uniamerica.unijobsbackend.repositories.TipoServicoRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,14 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Objects;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class ServicoService {
 
-    @Autowired
-    private ServicoRepository repository;
-
-    @Autowired
-    private TipoServicoRepository tipoServicoRepository;
+    private final ServicoRepository repository;
+    private final TipoServicoRepository tipoServicoRepository;
 
     public Page<ServicoDTO> findAll(Pageable pageable){
         Page<Servico> servicos = repository.findAll(pageable);

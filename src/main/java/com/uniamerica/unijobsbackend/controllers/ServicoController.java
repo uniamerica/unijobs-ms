@@ -21,8 +21,11 @@ import javax.validation.Valid;
 @RequestMapping("/servicos")
 public class ServicoController {
     
-    @Autowired
-    private ServicoService servicoService;
+    private final ServicoService servicoService;
+
+    public ServicoController(ServicoService servicoService) {
+        this.servicoService = servicoService;
+    }
 
     @GetMapping
     public ResponseEntity<Page<ServicoDTO>> findAll(Pageable pageable){
