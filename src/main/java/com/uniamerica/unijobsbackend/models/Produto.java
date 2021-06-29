@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 @Entity
-public class Produto {
+public class Produto extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_produto;

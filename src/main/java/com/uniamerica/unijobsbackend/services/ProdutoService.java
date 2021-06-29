@@ -42,31 +42,13 @@ public class ProdutoService {
                 .orElseThrow(
                         () -> new IllegalStateException("Produto não Existe. id: " + id)
                 );
-        if(novoProduto.getTitulo() != null && !Objects.equals(novoProduto.getTitulo(), produto1.getTitulo())){
-            produto1.setTitulo(novoProduto.getTitulo());
-        }
-        if (novoProduto.getDescricao() != null && !Objects.equals(novoProduto.getDescricao(), produto1.getDescricao())){
-            produto1.setDescricao(novoProduto.getDescricao());
-        }
-        if (novoProduto.getMiniatura() != null && !Objects.equals(produto1.getMiniatura(), novoProduto.getMiniatura())){
-            produto1.setMiniatura(novoProduto.getMiniatura());
-        }
-
-        if (novoProduto.getPrazo() != null && !Objects.equals(produto1.getPrazo(), novoProduto.getPrazo())){
-            produto1.setPrazo(novoProduto.getPrazo());
-        }
-
-        if (novoProduto.getPreco() != null && !Objects.equals(produto1.getPreco(), novoProduto.getPreco())){
-            produto1.setPreco(novoProduto.getPreco());
-        }
-
-        if (novoProduto.getTipoProduto() != null && !Objects.equals(produto1.getTipoProduto(), novoProduto.getTipoProduto())){
-            produto1.setTipoProduto(novoProduto.getTipoProduto());
-        }
-
-        if (!Objects.equals(produto1.getAtivo(), novoProduto.getAtivo())){
-            produto1.setAtivo(novoProduto.getAtivo());
-        }
+        produto1.setTitulo(novoProduto.getTitulo());
+        produto1.setDescricao(novoProduto.getDescricao());
+        produto1.setMiniatura(novoProduto.getMiniatura());
+        produto1.setPrazo(novoProduto.getPrazo());
+        produto1.setPreco(novoProduto.getPreco());
+        produto1.setTipoProduto(novoProduto.getTipoProduto());
+        produto1.setAtivo(novoProduto.getAtivo());
         return produto1;
     }
 }
