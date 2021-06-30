@@ -3,9 +3,10 @@ package com.uniamerica.unijobsbackend.services;
 import com.uniamerica.unijobsbackend.Excessoes.RecursoNaoEncontradoExcessao;
 import com.uniamerica.unijobsbackend.dto.ServicoDTO;
 import com.uniamerica.unijobsbackend.dto.TipoServicoDTO;
+import com.uniamerica.unijobsbackend.models.Servico;
 import com.uniamerica.unijobsbackend.models.TipoServico;
+import com.uniamerica.unijobsbackend.repositories.ServicoRepository;
 import com.uniamerica.unijobsbackend.repositories.TipoServicoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +18,11 @@ public class TipoServicoService {
 
     private final TipoServicoRepository tipoServicoRepository;
 
-    public TipoServicoService(TipoServicoRepository tipoServicoRepository) {
+    private final ServicoRepository servicoRepository;
+
+    public TipoServicoService(TipoServicoRepository tipoServicoRepository, ServicoRepository servicoRepository) {
         this.tipoServicoRepository = tipoServicoRepository;
+        this.servicoRepository = servicoRepository;
     }
 
     public List<TipoServicoDTO> listarTiposServicos(){
@@ -54,6 +58,7 @@ public class TipoServicoService {
                 .orElseThrow(
                         () -> new RecursoNaoEncontradoExcessao("Tipo Serviço não Encontrado! id:" + id_tipo_servico)
                 );
-        return tipoServico.getServico().stream().map(ServicoDTO::new).collect(Collectors.toList());
+        List<Servico> servicos = servicoRepository.findByTipoServico(tipoServico);
+        return servicos.stream().map(ServicoDTO::new).collect(Collectors.toList());
     }
 }

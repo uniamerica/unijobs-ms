@@ -61,6 +61,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/produtos/**",
                     "/servicos",
                     "/servicos/**",
+                    "/tiposServicos",
+                    "/tiposServicos/**",
                     "/itens",
                     "/itens/**"
                 ).permitAll().
