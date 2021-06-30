@@ -1,6 +1,8 @@
 package com.uniamerica.unijobsbackend.services;
 
+import com.cloudinary.Cloudinary;
 import com.uniamerica.unijobsbackend.Excessoes.RecursoNaoEncontradoExcessao;
+import com.uniamerica.unijobsbackend.configs.CloudinarySingleton;
 import com.uniamerica.unijobsbackend.dto.ServicoDTO;
 import com.uniamerica.unijobsbackend.models.Servico;
 import com.uniamerica.unijobsbackend.models.Servico;
@@ -38,7 +40,8 @@ public class ServicoService {
                         () -> new RecursoNaoEncontradoExcessao("Tipo Serviço não Encontrado! id:" + id_tipo_servico)
                 );
         servico.setTipoServico(tipoServico);
-
+        Cloudinary cloudinary = CloudinarySingleton.getCloudinary();
+        System.out.println(cloudinary);
         return new ServicoDTO(repository.save(servico));
     }
 
