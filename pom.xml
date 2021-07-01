@@ -86,6 +86,11 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper-examples</artifactId>
+            <version>2.4.4</version>
+        </dependency>
     </dependencies>
 
     <build>
