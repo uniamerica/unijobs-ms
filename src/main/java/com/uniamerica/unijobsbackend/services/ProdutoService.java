@@ -36,7 +36,7 @@ public class ProdutoService {
             () -> new RecursoNaoEncontradoExcessao("Categoria não Encontrada! id:" + id_tipo_produto)
           );
         produto.setTipoProduto(produto1);
-
+        produto.setAtivo(true);
         return repositorioProduto.save(produto);
     }
 
@@ -63,5 +63,11 @@ public class ProdutoService {
         produto1.setTipoProduto(novoProduto.getTipoProduto());
         produto1.setAtivo(novoProduto.getAtivo());
         return produto1;
+    }
+
+    public Produto BuscarProduto(Integer id) {
+        return repositorioProduto.findById(id).orElseThrow(
+            () -> new IllegalStateException("Produto não Existe. id: " + id)
+        );
     }
 }

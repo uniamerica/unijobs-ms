@@ -1,6 +1,6 @@
 package com.uniamerica.unijobsbackend.controllers;
 
-import com.uniamerica.unijobsbackend.dto.ListaProdutoDTO;
+import com.uniamerica.unijobsbackend.dto.ProdutoDTO;
 import com.uniamerica.unijobsbackend.models.Produto;
 import com.uniamerica.unijobsbackend.dto.input.NovoProdutoDTO;
 import com.uniamerica.unijobsbackend.services.ProdutoService;
@@ -29,10 +29,10 @@ public class ProdutoController {
 
     @GetMapping
     @Operation(summary = "Retorna uma lista de Produtos")
-    public List<ListaProdutoDTO> visualizar(){
+    public List<ProdutoDTO> visualizar(){
         return produtoService.VisualizarProduto()
                 .stream()
-                .map(this::toListaProdutoDTO)
+                .map(this::toProdutoDTO)
                 .collect(Collectors.toList());
     }
 
@@ -57,7 +57,14 @@ public class ProdutoController {
         return produtoService.DeletarProduto(id_produto);
     }
 
-    private ListaProdutoDTO toListaProdutoDTO(Produto produto){
-        return modelMapper.map(produto, ListaProdutoDTO.class);
+    private ProdutoDTO toProdutoDTO(Produto produto){
+        return modelMapper.map(produto, ProdutoDTO.class);
+    }
+
+    @GetMapping(path = "{id_produto}")
+    @Operation(summary = "Busca um Produto")
+    @ResponseStatus(HttpStatus.OK)
+    public ProdutoDTO buscaProdutoPorId(@PathVariable("id_produto") Integer id_produto){
+        return toProdutoDTO(produtoService.BuscarProduto(id_produto));
     }
 }

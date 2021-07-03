@@ -28,9 +28,11 @@ public class Produto extends BaseEntity {
 
     private Integer prazo;
 
-    private Integer id_usuario;
-
     @ManyToOne
     @JoinColumn(name = "id_tipo_produto")
     private TipoProduto tipoProduto;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 }
