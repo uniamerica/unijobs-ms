@@ -1,10 +1,13 @@
 package com.uniamerica.unijobsbackend.services;
 
 import com.uniamerica.unijobsbackend.Excessoes.RecursoNaoEncontradoExcessao;
+import com.uniamerica.unijobsbackend.dto.ProdutoDTO;
 import com.uniamerica.unijobsbackend.models.Produto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioProduto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioTipoProduto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,8 +27,8 @@ public class ProdutoService {
         this.repositorioTipoProduto = repositorioTipoProduto;
     }
 
-    public List<Produto> VisualizarProduto(){
-        return repositorioProduto.findAll();
+    public Page<Produto> VisualizarProduto(Pageable pageable){
+        return repositorioProduto.findAll(pageable);
     }
 
     public Produto CadastrarProduto(Produto produto) {
