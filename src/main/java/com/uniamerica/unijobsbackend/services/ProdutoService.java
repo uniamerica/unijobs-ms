@@ -1,7 +1,9 @@
 package com.uniamerica.unijobsbackend.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.uniamerica.unijobsbackend.Excessoes.RecursoNaoEncontradoExcessao;
-import com.uniamerica.unijobsbackend.dto.ProdutoDTO;
+import com.uniamerica.unijobsbackend.configs.CloudinarySingleton;
 import com.uniamerica.unijobsbackend.models.Produto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioProduto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioTipoProduto;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,6 +43,13 @@ public class ProdutoService {
           );
         produto.setTipoProduto(produto1);
         produto.setAtivo(true);
+        Cloudinary cloudinary = CloudinarySingleton.getCloudinary();
+        try {
+            var uploadResult = cloudinary.uploader().upload(produto.getMiniatura(), ObjectUtils.emptyMap());
+            produto.setMiniatura((String) uploadResult.get("url"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return repositorioProduto.save(produto);
     }
 

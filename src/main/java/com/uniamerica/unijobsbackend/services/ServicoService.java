@@ -1,6 +1,9 @@
 package com.uniamerica.unijobsbackend.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.uniamerica.unijobsbackend.Excessoes.RecursoNaoEncontradoExcessao;
+import com.uniamerica.unijobsbackend.configs.CloudinarySingleton;
 import com.uniamerica.unijobsbackend.dto.ServicoDTO;
 import com.uniamerica.unijobsbackend.models.Servico;
 import com.uniamerica.unijobsbackend.models.Servico;
@@ -16,6 +19,9 @@ import org.springframework.security.config.web.servlet.oauth2.resourceserver.OAu
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -38,7 +44,13 @@ public class ServicoService {
                         () -> new RecursoNaoEncontradoExcessao("Tipo Serviço não Encontrado! id:" + id_tipo_servico)
                 );
         servico.setTipoServico(tipoServico);
-
+        Cloudinary cloudinary = CloudinarySingleton.getCloudinary();
+        try {
+            var uploadResult = cloudinary.uploader().upload(servico.getMiniatura(), ObjectUtils.emptyMap());
+            servico.setMiniatura((String) uploadResult.get("url"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return new ServicoDTO(repository.save(servico));
     }
 
