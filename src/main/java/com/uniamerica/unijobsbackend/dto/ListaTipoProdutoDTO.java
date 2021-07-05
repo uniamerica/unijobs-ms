@@ -10,6 +10,7 @@ import java.util.List;
 
 @Data
 public class ListaTipoProdutoDTO implements Serializable {
+    private Integer id_tipo_produto;
     private String nome;
     private String descricao;
 }

@@ -2,6 +2,9 @@ package com.uniamerica.unijobsbackend.controllers;
 
 import com.uniamerica.unijobsbackend.dto.ListaTipoProdutoDTO;
 import com.uniamerica.unijobsbackend.dto.NovoTipoProdutoDTO;
+import com.uniamerica.unijobsbackend.dto.ProdutoDTO;
+import com.uniamerica.unijobsbackend.dto.ServicoDTO;
+import com.uniamerica.unijobsbackend.models.Produto;
 import com.uniamerica.unijobsbackend.services.TipoProdutoService;
 import com.uniamerica.unijobsbackend.models.TipoProduto;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -10,6 +13,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -59,5 +63,14 @@ public class TipoProdutoController {
 
     private ListaTipoProdutoDTO toListaTipoProdutoDTO(TipoProduto tipoProduto){
         return modelMapper.map(tipoProduto, ListaTipoProdutoDTO.class);
+    }
+
+    private ProdutoDTO toProdutoDTO(Produto produto){
+        return modelMapper.map(produto, ProdutoDTO.class);
+    }
+
+    @GetMapping(path = "{id}/produtos")
+    public ResponseEntity<List<ProdutoDTO>> produtosByTipoProduto(@PathVariable("id") Integer id){
+        return ResponseEntity.ok(tipoProdutoService.servicosByTipoProdutos(id).stream().map(this::toProdutoDTO).collect(Collectors.toList()));
     }
 }

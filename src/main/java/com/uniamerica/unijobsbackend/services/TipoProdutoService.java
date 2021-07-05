@@ -1,5 +1,9 @@
 package com.uniamerica.unijobsbackend.services;
 
+import com.uniamerica.unijobsbackend.Excessoes.RecursoNaoEncontradoExcessao;
+import com.uniamerica.unijobsbackend.dto.ServicoDTO;
+import com.uniamerica.unijobsbackend.models.Produto;
+import com.uniamerica.unijobsbackend.repositories.RepositorioProduto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioTipoProduto;
 import com.uniamerica.unijobsbackend.models.TipoProduto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +13,18 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TipoProdutoService {
     @Autowired
     private final RepositorioTipoProduto repositorioTipoProduto;
 
-    public TipoProdutoService(RepositorioTipoProduto repositorioTipoProduto) {
+    private final RepositorioProduto repositorioProduto;
+
+    public TipoProdutoService(RepositorioTipoProduto repositorioTipoProduto, RepositorioProduto repositorioProduto) {
         this.repositorioTipoProduto = repositorioTipoProduto;
+        this.repositorioProduto = repositorioProduto;
     }
 
     public List<TipoProduto> VisualizarTipoProduto(){
@@ -57,5 +65,14 @@ public class TipoProdutoService {
         if(TipoProdutoPorNome.isPresent()){
             throw new IllegalStateException("Categoria Já Existente");
         }
+    }
+
+    public List<Produto> servicosByTipoProdutos(Integer id){
+        TipoProduto tipoProduto = repositorioTipoProduto.findById(id)
+                .orElseThrow(
+                        () -> new RecursoNaoEncontradoExcessao("Tipo Produto não Encontrado! id:" + id)
+                );
+        List<Produto> produtos = repositorioProduto.findByTipoProduto(tipoProduto);
+        return produtos;
     }
 }
