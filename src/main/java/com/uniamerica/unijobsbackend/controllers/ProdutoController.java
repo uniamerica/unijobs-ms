@@ -1,6 +1,7 @@
 package com.uniamerica.unijobsbackend.controllers;
 
 import com.uniamerica.unijobsbackend.dto.ProdutoDTO;
+import com.uniamerica.unijobsbackend.dto.ServicoDTO;
 import com.uniamerica.unijobsbackend.models.Produto;
 import com.uniamerica.unijobsbackend.dto.input.NovoProdutoDTO;
 import com.uniamerica.unijobsbackend.services.ProdutoService;
@@ -9,7 +10,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,11 +33,9 @@ public class ProdutoController {
 
     @GetMapping
     @Operation(summary = "Retorna uma lista de Produtos")
-    public List<ProdutoDTO> visualizar(){
-        return produtoService.VisualizarProduto()
-                .stream()
-                .map(this::toProdutoDTO)
-                .collect(Collectors.toList());
+    public Page<ProdutoDTO> visualizar(Pageable pageable){
+        return produtoService.VisualizarProduto(pageable)
+                .map(this::toProdutoDTO);
     }
 
     @PostMapping
