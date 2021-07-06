@@ -7,6 +7,7 @@ import com.uniamerica.unijobsbackend.configs.CloudinarySingleton;
 import com.uniamerica.unijobsbackend.models.Produto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioProduto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioTipoProduto;
+import com.uniamerica.unijobsbackend.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,11 +24,15 @@ public class ProdutoService {
     private final RepositorioProduto repositorioProduto;
 
     @Autowired
+    private final UsuarioRepository usuarioRepository;
+
+    @Autowired
     private final RepositorioTipoProduto repositorioTipoProduto;
 
-    public ProdutoService(RepositorioProduto repositorioProduto, RepositorioTipoProduto repositorioTipoProduto) {
+    public ProdutoService(RepositorioProduto repositorioProduto, RepositorioTipoProduto repositorioTipoProduto, UsuarioRepository usuarioRepository) {
         this.repositorioProduto = repositorioProduto;
         this.repositorioTipoProduto = repositorioTipoProduto;
+        this.usuarioRepository = usuarioRepository;
     }
 
     public Page<Produto> VisualizarProduto(Pageable pageable){
@@ -36,13 +41,20 @@ public class ProdutoService {
 
     public Produto CadastrarProduto(Produto produto) {
         Integer id_tipo_produto = produto.getTipoProduto().getId_tipo_produto();
+        Integer id_usuario = produto.getUsuario().getId();
 
-        var produto1 = repositorioTipoProduto.findById(id_tipo_produto)
+        var tipo = repositorioTipoProduto.findById(id_tipo_produto)
           .orElseThrow(
             () -> new RecursoNaoEncontradoExcessao("Categoria não Encontrada! id:" + id_tipo_produto)
           );
-        produto.setTipoProduto(produto1);
+
+        var usuario = usuarioRepository.findById(id_usuario)
+            .orElseThrow(
+                () -> new RecursoNaoEncontradoExcessao("Usuario não Encontrado! id:" + id_usuario)
+            );
+        produto.setTipoProduto(tipo);
         produto.setAtivo(true);
+        produto.setUsuario(usuario);
         Cloudinary cloudinary = CloudinarySingleton.getCloudinary();
         try {
             var uploadResult = cloudinary.uploader().upload(produto.getMiniatura(), ObjectUtils.emptyMap());

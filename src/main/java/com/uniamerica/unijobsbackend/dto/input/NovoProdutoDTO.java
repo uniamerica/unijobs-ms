@@ -2,6 +2,7 @@ package com.uniamerica.unijobsbackend.dto.input;
 
 import com.uniamerica.unijobsbackend.models.Produto;
 import com.uniamerica.unijobsbackend.models.TipoProduto;
+import com.uniamerica.unijobsbackend.models.Usuario;
 import lombok.Data;
 
 import javax.persistence.JoinColumn;
@@ -30,6 +31,10 @@ public class NovoProdutoDTO {
     @JoinColumn(name = "id_tipo_produto")
     private TipoProduto tipoProduto;
 
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+
     public Produto converteModelo(){
         Produto produto = new Produto();
         produto.setTitulo(titulo);
@@ -38,6 +43,7 @@ public class NovoProdutoDTO {
         produto.setMiniatura(miniatura);
         produto.setPrazo(prazo);
         produto.setTipoProduto(tipoProduto);
+        produto.setUsuario(usuario);
 
         return produto;
     }
