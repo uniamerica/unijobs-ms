@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Data
 public class ServicoDTO implements Serializable {
-    private Integer id_servico;
+    private Integer id;
     private String titulo;
     private String descricao;
     private Double preco;
@@ -19,7 +19,7 @@ public class ServicoDTO implements Serializable {
     private TipoServicoDTO tipoServico;
 
     public ServicoDTO(Servico servico) {
-        id_servico = servico.getId_servico();
+        id = servico.getId_servico();
         titulo = servico.getTitulo();
         descricao = servico.getDescricao();
         preco = servico.getPreco();

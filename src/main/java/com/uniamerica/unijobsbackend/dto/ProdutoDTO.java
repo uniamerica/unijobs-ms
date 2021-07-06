@@ -9,6 +9,8 @@ import lombok.Data;
 
 @Data
 public class ProdutoDTO {
+    @JsonProperty("id")
+    private Integer id_produto;
     private String titulo;
     private String descricao;
     private Double preco;

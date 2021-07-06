@@ -77,7 +77,7 @@ class ServicoServiceTest {
         var result = underTest.store(servico);
 
         //then (Verificação)
-        assertThat(result.getId_servico()).isEqualTo(1);
+        assertThat(result.getId()).isEqualTo(1);
         assertThat(result).isNotNull();
         assertThat(result.getDescricao()).isEqualTo("joj");
 //        assertThat(result).isEqualTo();
@@ -159,7 +159,7 @@ class ServicoServiceTest {
         assertThat(result)
                 .isNotNull()
                 .isEqualTo(new ServicoDTO(servico));
-        assertThat(result.getId_servico()).isEqualTo(servico.getId_servico());
+        assertThat(result.getId()).isEqualTo(servico.getId_servico());
     }
 
     @Test
