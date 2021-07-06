@@ -15,6 +15,7 @@ public class ItensDTO implements Serializable {
     private String miniatura;
     private boolean ativo;
     private Integer prazo;
+    private String tipoItem;
 
     private TipoItemDTO tipo;
 
@@ -27,6 +28,7 @@ public class ItensDTO implements Serializable {
         ativo = servico.isAtivo();
         prazo = servico.getPrazo();
         tipo = new TipoItemDTO(servico.getTipoServico());
+        tipoItem = "servicos";
     }
 
     public ItensDTO(Produto produto) {
@@ -38,5 +40,6 @@ public class ItensDTO implements Serializable {
         ativo = produto.getAtivo();
         prazo = produto.getPrazo();
         tipo = new TipoItemDTO(produto.getTipoProduto());
+        tipoItem = "produtos";
     }
 }
