@@ -6,17 +6,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class UserSecurity implements UserDetails {
+public class UserSecurity extends Usuario implements UserDetails {
 
-    private String username;
-    private String password;
-
-    public UserSecurity(Usuario usuario) {
-        this.username = usuario.getEmail();
-        this.password = usuario.getSenha();
+    public UserSecurity(Usuario user) {
+        super(user);
     }
-
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -25,12 +19,12 @@ public class UserSecurity implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return super.getSenha();
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return super.getEmail();
     }
 
     @Override

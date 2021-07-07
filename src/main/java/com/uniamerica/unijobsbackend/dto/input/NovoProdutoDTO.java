@@ -35,6 +35,9 @@ public class NovoProdutoDTO {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
+    @NotNull(message = "O tipo produto é obrigatório")
+    private Integer id_tipo_produto;
+
     public Produto converteModelo(){
         Produto produto = new Produto();
         produto.setTitulo(titulo);
@@ -42,7 +45,7 @@ public class NovoProdutoDTO {
         produto.setPreco(preco);
         produto.setMiniatura(miniatura);
         produto.setPrazo(prazo);
-        produto.setTipoProduto(tipoProduto);
+        produto.setTipoProduto(new TipoProduto(id_tipo_produto));
         produto.setUsuario(usuario);
 
         return produto;

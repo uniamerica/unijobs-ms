@@ -1,5 +1,6 @@
 package com.uniamerica.unijobsbackend.auth.config;
 
+import com.uniamerica.unijobsbackend.auth.model.UserSecurity;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -20,7 +21,7 @@ public class JwtTokenUtil implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
 
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;  // tempo que expira o token
+    public static final long JWT_TOKEN_VALIDITY = 60 * 60 * 60;  // tempo que expira o token
 
     @Value("${jwt.secret}")
     private String secret;
@@ -51,9 +52,11 @@ public class JwtTokenUtil implements Serializable {
     }
 
     //generate token for user
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserSecurity user) {
         Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername());
+//        claims.put("token", user.getUsername());
+
+        return doGenerateToken(claims, user);
     }
 
     //while creating the token -
@@ -61,9 +64,14 @@ public class JwtTokenUtil implements Serializable {
     //2. Sign the JWT using the HS512 algorithm and secret key.
     //3. According to JWS Compact Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
     //   compaction of the JWT to a URL-safe string
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
+    private String doGenerateToken(Map<String, Object> claims, UserSecurity subject) {
 
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject.getUsername())
+                .claim("id_usuario", subject.getId())
+                .claim("nome", subject.getNome())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }

@@ -2,6 +2,7 @@ package com.uniamerica.unijobsbackend.auth.services;
 
 import com.uniamerica.unijobsbackend.Excessoes.RegraNegocioExcessao;
 import com.uniamerica.unijobsbackend.auth.config.JwtTokenUtil;
+import com.uniamerica.unijobsbackend.auth.model.UserSecurity;
 import com.uniamerica.unijobsbackend.models.Usuario;
 import com.uniamerica.unijobsbackend.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,7 @@ public class AuthService {
     public String login(String email, String password) throws Exception {
         authenticate(email, password);
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        final UserSecurity userDetails = (UserSecurity) userDetailsService.loadUserByUsername(email);
 
         return jwtTokenUtil.generateToken(userDetails);
     }

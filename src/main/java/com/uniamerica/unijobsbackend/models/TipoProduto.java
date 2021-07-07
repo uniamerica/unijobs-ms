@@ -22,4 +22,8 @@ public class TipoProduto {
     private String nome;
 
     private String descricao;
+
+    public TipoProduto(Integer id_tipo_produto) {
+        this.id_tipo_produto = id_tipo_produto;
+    }
 }

@@ -34,4 +34,13 @@ public class Usuario implements Serializable {
     @OneToOne
     private TipoUsuario tipoUsuario;
 
+    public Usuario(Usuario user) {
+        this.id = user.getId();
+        this.email = user.getEmail();
+        this.senha = user.getSenha();
+        this.nome = user.getNome();
+        this.celular = user.getNome();
+        this.ra = user.getRa();
+        this.tipoUsuario = user.getTipoUsuario();
+    }
 }
