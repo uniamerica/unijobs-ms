@@ -37,6 +37,8 @@ public class NovoProdutoDTO {
 
     @NotNull(message = "O tipo produto é obrigatório")
     private Integer id_tipo_produto;
+    @NotNull(message = "O Usuario é obrigatório")
+    private Integer id_usuario;
 
     public Produto converteModelo(){
         Produto produto = new Produto();
@@ -46,7 +48,7 @@ public class NovoProdutoDTO {
         produto.setMiniatura(miniatura);
         produto.setPrazo(prazo);
         produto.setTipoProduto(new TipoProduto(id_tipo_produto));
-        produto.setUsuario(usuario);
+        produto.setUsuario(new Usuario(id_usuario));
 
         return produto;
     }

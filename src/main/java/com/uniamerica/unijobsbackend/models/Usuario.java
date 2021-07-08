@@ -43,4 +43,8 @@ public class Usuario implements Serializable {
         this.ra = user.getRa();
         this.tipoUsuario = user.getTipoUsuario();
     }
+
+    public Usuario(Integer id_usuario) {
+        id = id_usuario;
+    }
 }
