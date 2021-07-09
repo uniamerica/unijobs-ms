@@ -15,6 +15,8 @@ public class ServicoDTO implements Serializable {
     private String miniatura;
     private boolean ativo;
     private Integer prazo;
+    private String anunciante;
+    private String contato;
 
     private TipoServicoDTO tipoServico;
 
@@ -27,5 +29,7 @@ public class ServicoDTO implements Serializable {
         ativo = servico.isAtivo();
         prazo = servico.getPrazo();
         tipoServico = new TipoServicoDTO(servico.getTipoServico());
+        anunciante = servico.getUsuario().getNome();
+        contato = servico.getUsuario().getCelular();
     }
 }

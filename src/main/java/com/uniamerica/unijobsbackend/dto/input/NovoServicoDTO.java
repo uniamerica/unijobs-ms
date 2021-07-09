@@ -2,6 +2,7 @@ package com.uniamerica.unijobsbackend.dto.input;
 
 import com.uniamerica.unijobsbackend.models.Servico;
 import com.uniamerica.unijobsbackend.models.TipoServico;
+import com.uniamerica.unijobsbackend.models.Usuario;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -28,6 +29,9 @@ public class NovoServicoDTO {
     @NotNull(message = "O tipo servico é obrigatório")
     private Integer id_tipo_servico;
 
+    @NotNull(message = "O Usuario é obrigatório")
+    private Integer id_usuario;
+
     public Servico converteModelo(){
         Servico servico = new Servico();
         servico.setTitulo(titulo);
@@ -36,6 +40,7 @@ public class NovoServicoDTO {
         servico.setMiniatura(miniatura);
         servico.setPrazo(prazo);
         servico.setTipoServico(new TipoServico(id_tipo_servico));
+        servico.setUsuario(new Usuario(id_usuario));
 
         return servico;
     }
