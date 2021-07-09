@@ -34,6 +34,10 @@ public class Servico extends BaseEntity{
     @JoinColumn(name = "id_tipo_servico", nullable = false)
     private TipoServico tipoServico;
 
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
