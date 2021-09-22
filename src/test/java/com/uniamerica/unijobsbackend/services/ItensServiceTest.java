@@ -1,5 +1,6 @@
 package com.uniamerica.unijobsbackend.services;
 
+import com.uniamerica.unijobsbackend.dto.ItensDTO;
 import com.uniamerica.unijobsbackend.repositories.RepositorioProduto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioTipoProduto;
 import com.uniamerica.unijobsbackend.repositories.ServicoRepository;
@@ -7,6 +8,8 @@ import com.uniamerica.unijobsbackend.repositories.TipoServicoRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 /**
  * ItensService Tester.
@@ -17,18 +20,19 @@ import org.junit.Test;
  */
 public class ItensServiceTest {
 
-   @Mock
-   private ServicoRepository servicoRepository;
-   @Mock
-   private TipoServicoRepository tipoServicoRepository;
-   @Mock
-   private RepositorioProduto produtoRepository;
-   @Mock
-   private RepositorioTipoProduto tipoProdutoRepository;
+    @InjectMocks
+    private ItensService itensService;
+    @Mock
+    private ServicoRepository servicoRepositoryMock;
+    @Mock
+    private TipoServicoRepository tipoServicoRepositoryMock;
+    @Mock
+    private RepositorioProduto produtoRepositoryMock;
+    @Mock
+    private RepositorioTipoProduto tipoProdutoRepositoryMock;
 
-  @InjectMocks
-   private ItensServiceTest intesT
-
+    @Mock
+    private ItensDTO itensDTO;
 
 
     @Before
@@ -45,5 +49,7 @@ public class ItensServiceTest {
     @Test
     public void testRecentemente_adicionados() throws Exception {
 //TODO: Test goes here...
+
+
     }
 }
