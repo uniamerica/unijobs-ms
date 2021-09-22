@@ -27,7 +27,7 @@ public class TesteProdutoRepository {
         Assertions.assertEquals(repositorio.findById(0), p);
     }
 
-    @Test
+    /*@Test
     public void EdicaoDeProduto(){
         Produto p = new Produto(0, "produto titulo", "descricao produto", 28.0, "miniatura produto", false, 28, null, null);
         Produto save = repositorio.save(p);
@@ -42,5 +42,5 @@ public class TesteProdutoRepository {
         Produto save = repositorio.save(p);
         repositorio.deleteById(0);
         Assertions.assertNotEquals(repositorio.findById(0), p);
-    }
+    }*/
 }
