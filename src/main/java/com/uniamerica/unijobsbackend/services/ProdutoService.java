@@ -71,8 +71,11 @@ public class ProdutoService {
     }
 
     public String DeletarProduto(Integer id) {
+
+
         boolean existe = repositorioProduto.existsById(id);
-        if(!existe){
+
+        if(existe){
             throw new RecursoNaoEncontradoExcessao("Produto não Existe. id: " + id);
         }
         repositorioProduto.deleteById(id);
