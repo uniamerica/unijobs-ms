@@ -31,19 +31,13 @@ class UsuarioServiceTest {
     @Mock
     private TipoUsuarioRepository tipoUsuarioRepositoryMock;
 
-//    @BeforeEach
-//    void setupMock() {
-//        UsuarioFake usuarioFake = new UsuarioFake();
-//        when(usuarioRepositoryMock.findByEmail(ArgumentMatchers.anyString())).thenReturn(Optional.of(usuarioFake.getInstance()));
-//        when(usuarioRepositoryMock.save(ArgumentMatchers.any())).thenReturn(getClass(getClass()));
-//    }
-
 
     @Test
     @DisplayName("o administrador deve cadastrar ou registar um novo usuario")
     void store() {
         TipoUsuario tipoUsuario = new TipoUsuario();
         tipoUsuario.setId(1);
+        
         Usuario usuario = new Usuario(
                 0,
                 "email teste",
@@ -72,6 +66,23 @@ class UsuarioServiceTest {
     }
 
     @Test
+    @DisplayName("O adiministrador do usuario deve eliminar o usuario")
     void destroy() {
+        TipoUsuario tipoUsuario = new TipoUsuario();
+        tipoUsuario.setId(2);
+
+        Usuario usuario = new Usuario(
+                0,
+                "liocroons@unijobs.com",
+                "test123",
+                "Lio croons",
+                "12333455",
+                "503090",
+                tipoUsuario
+        );
+
+        when(tipoUsuarioRepositoryMock.findById(any())).thenReturn(Optional.of(tipoUsuario));
+
+        Assertions.assertDoesNotThrow(()->{usuarioService.destroy(usuario.getId());});
     }
 }
