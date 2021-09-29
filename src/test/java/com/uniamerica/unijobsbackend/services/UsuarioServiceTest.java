@@ -10,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
@@ -30,6 +32,13 @@ class UsuarioServiceTest {
 
     @Mock
     private TipoUsuarioRepository tipoUsuarioRepositoryMock;
+
+    @BeforeEach
+    public void setupMock() {
+        Usuario usuario = new Usuario();
+        when(usuarioRepositoryMock.findByEmail(ArgumentMatchers.anyString())).thenReturn(Optional.of(usuario));
+        when(usuarioRepositoryMock.save(ArgumentMatchers.any())).thenReturn(getClass());
+    }
 
 
     @Test
@@ -60,10 +69,20 @@ class UsuarioServiceTest {
     @Test
     void show() {
     }
-
-    @Test
-    void update() {
-    }
+//
+//    @Test
+//    @DisplayName("O usuario autenticado deve conseguir atualizar o próprio cadastro")
+//    void update() {
+//        TipoUsuario tipoUsuario1 = new TipoUsuario();
+//        tipoUsuario1.setId(3);
+//
+//        Usuario usuario1 = new Usuario();
+//
+//        when(SecurityContextHolder.getContext().getAuthentication().getPrincipal()).thenReturn(null);
+//        when(usuarioRepositoryMock.findById(ArgumentMatchers.anyInt())).thenReturn(Optional.empty());
+//        assertThrows(AuthenticationException.class, () -> usuarioService.update(usuario1));
+//
+//    }
 
     @Test
     @DisplayName("O adiministrador do usuario deve eliminar o usuario")
