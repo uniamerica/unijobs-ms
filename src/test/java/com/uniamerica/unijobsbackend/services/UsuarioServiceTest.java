@@ -14,6 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -64,25 +65,39 @@ class UsuarioServiceTest {
 
     @Test
     void index() {
+        List<Usuario> before = usuarioService.index();
+
+        Usuario usuario = new Usuario();
+
+        usuario.setNome("Willian");
+        usuario.setEmail("will@unijobs");
+        usuario.setSenha("46665");
+        usuario.setCelular("458489");
+        usuario.setRa("4544");
+
+        usuarioService.store(usuario);
+
+        List<Usuario> after = usuarioService.index();
+        Assertions.assertEquals(after.size(), before.size() + 1);
+
+
     }
 
     @Test
     void show() {
+        Usuario usuario = new Usuario();
+        usuario.setNome("Willian");
+        usuario.setEmail("will@unijobs");
+        usuario.setSenha("46665");
+        usuario.setCelular("458489");
+        usuario.setRa("4544");
+
+        usuarioService.store(usuario);
+
+        Optional<Usuario> result = usuarioService.show(usuario.getId());
+        Assertions.assertTrue(result.isPresent());
+
     }
-//
-//    @Test
-//    @DisplayName("O usuario autenticado deve conseguir atualizar o próprio cadastro")
-//    void update() {
-//        TipoUsuario tipoUsuario1 = new TipoUsuario();
-//        tipoUsuario1.setId(3);
-//
-//        Usuario usuario1 = new Usuario();
-//
-//        when(SecurityContextHolder.getContext().getAuthentication().getPrincipal()).thenReturn(null);
-//        when(usuarioRepositoryMock.findById(ArgumentMatchers.anyInt())).thenReturn(Optional.empty());
-//        assertThrows(AuthenticationException.class, () -> usuarioService.update(usuario1));
-//
-//    }
 
     @Test
     @DisplayName("O adiministrador do usuario deve eliminar o usuario")
