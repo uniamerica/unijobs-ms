@@ -37,6 +37,12 @@ public class TipoServico {
         this.descricao = descricao;
     }
 
+    public TipoServico(Integer id_tipo_servico, String nome, String descricao) {
+        this.id_tipo_servico = id_tipo_servico;
+        this.nome = nome;
+        this.descricao = descricao;
+    }
+
     public TipoServico(Integer id_tipo_servico) {
         this.id_tipo_servico = id_tipo_servico;
     }

@@ -14,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 public class TesteProdutoRepository {
 
 
-    RepositorioProduto repository = new RepositorioProduto();
+    RepositorioProduto repository;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
