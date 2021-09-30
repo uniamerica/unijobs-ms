@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,13 +30,13 @@ public class TipoServicoService {
         return tipoServicoRepository.findAll().stream().map(TipoServicoDTO::new).collect(Collectors.toList());
     }
 
-    public TipoServicoDTO novoTipoServico(TipoServico tipoServico) {
-        return new TipoServicoDTO(tipoServicoRepository.save(tipoServico));
+    public TipoServico novoTipoServico(TipoServico tipoServico) {
+        return tipoServicoRepository.save(tipoServico);
     }
 
     public String deletarTipoServico(Integer id) {
-        boolean existe = tipoServicoRepository.existsById(id);
-        if(!existe){
+        Optional<TipoServico> existe = tipoServicoRepository.findById(id);
+        if(existe == null){
             throw new RecursoNaoEncontradoExcessao("Tipo de Serviço não Existe. id: " + id);
         }
         tipoServicoRepository.deleteById(id);

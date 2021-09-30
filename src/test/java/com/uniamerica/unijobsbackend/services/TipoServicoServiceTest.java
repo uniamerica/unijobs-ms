@@ -23,6 +23,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -33,10 +35,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-@AutoConfigureMockMvc
-@WebMvcTest
-@RunWith(MockitoJUnitRunner.class)
+//@AutoConfigureMockMvc
+//@WebMvcTest
+//@RunWith(MockitoJUnitRunner.class)
+//@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
 class TipoServicoServiceTest {
 
     @Mock
@@ -44,7 +47,7 @@ class TipoServicoServiceTest {
     @Mock
     private TipoServicoRepository tipoServicoRepository;
 
-    @Autowired
+    @InjectMocks
     private TipoServicoService tipoServicoClass;
 
     @BeforeEach
@@ -52,6 +55,7 @@ class TipoServicoServiceTest {
         tipoServicoClass = new TipoServicoService(tipoServicoRepository, repository);
     }
 
+    @DisplayName("Trazer todos os Tipos Serviços")
     @Test
     void shouldReturnSuccess_FindAllTipoServices() {
 
@@ -69,16 +73,13 @@ class TipoServicoServiceTest {
     void shouldCreateTipoServicos_ReturnSucess() {
 
         // cenario
-        TipoServico tipoServico = new TipoServico(1,"Manutenção", "manutencao em computadores");
-        tipoServicoRepository.save(tipoServico);
+        TipoServico tipoServicoteste = new TipoServico(1,"Manutenção", "manutencao em computadores");
+        var result = tipoServicoClass.novoTipoServico(tipoServicoteste);
 
-        // simulação
-        Mockito.when(tipoServicoRepository.findTipoServicoByNome(tipoServico.getNome())).thenReturn(Optional.of(tipoServico));
-        var result = tipoServicoClass.novoTipoServico(tipoServico);
+        var listTipoServicos = tipoServicoClass.listarTiposServicos();
 
-        assertThat(result.getId_tipo_servico()).isEqualTo(1);
-        assertThat(result).isNotNull();
-        assertThat(result.getDescricao()).isEqualTo("manutencao em computadores");
+        //then
+        assertThat(listTipoServicos.contains(tipoServicoteste));
 
     }
 
@@ -86,11 +87,37 @@ class TipoServicoServiceTest {
     @Test
     void shouldDestroyTipoServico() {
         // cenario
-        TipoServico tipoServico = new TipoServico(1,"Manutenção", "manutencao em computadores");
-        tipoServicoRepository.save(tipoServico);
+        TipoServico tipoServicoteste = new TipoServico(1,"Manutenção", "manutencao em computadores");
 
+        when(tipoServicoClass.novoTipoServico(tipoServicoteste)).thenReturn(tipoServicoteste);
         var result = tipoServicoClass.deletarTipoServico(1);
+
         assertThat(result).isEqualTo("Tipo Serviço deletado com sucesso!");
 
+    }
+
+    @DisplayName("Atualizar um Tipo Serviço")
+    @Test
+    void shouldUpdateTipoServico() {
+        // cenario
+        TipoServico tipoServicoteste = new TipoServico(1,"Manutenção", "manutencao em computadores");
+        TipoServico novoTipoServico = new TipoServico("Aulas de Musica", "Aulas de Musica");
+        tipoServicoRepository.save(tipoServicoteste);
+
+        when(tipoServicoRepository.findById(any())).thenReturn(Optional.of(tipoServicoteste));
+
+        Assertions.assertDoesNotThrow(() -> tipoServicoClass.atualizarTipoServico(1, novoTipoServico));
+    }
+
+    @DisplayName("Busca Tipo Serviço por id")
+    @Test
+    void shouldaFindTipoServicoForId() {
+        // cenario
+        TipoServico tipoServicoteste = new TipoServico(1,"Manutenção", "manutencao em computadores");
+        tipoServicoRepository.save(tipoServicoteste);
+
+        when(tipoServicoRepository.findById(any())).thenReturn(Optional.of(tipoServicoteste));
+
+        Assertions.assertDoesNotThrow(() -> tipoServicoClass.servicosByTipoServicos(1));
     }
 }
