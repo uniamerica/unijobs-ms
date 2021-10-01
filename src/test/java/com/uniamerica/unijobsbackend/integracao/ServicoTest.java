@@ -1,113 +1,118 @@
 package com.uniamerica.unijobsbackend.integracao;
 
-import com.uniamerica.unijobsbackend.controllers.TipoServicoController;
-import com.uniamerica.unijobsbackend.dto.TipoServicoDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uniamerica.unijobsbackend.auth.config.JwtAuthenticationEntryPoint;
+import com.uniamerica.unijobsbackend.auth.config.JwtTokenUtil;
+import com.uniamerica.unijobsbackend.auth.services.UserService;
+import com.uniamerica.unijobsbackend.models.Servico;
 import com.uniamerica.unijobsbackend.models.TipoServico;
+import com.uniamerica.unijobsbackend.models.TipoUsuario;
+import com.uniamerica.unijobsbackend.models.Usuario;
 import com.uniamerica.unijobsbackend.repositories.ServicoRepository;
 import com.uniamerica.unijobsbackend.repositories.TipoServicoRepository;
-import com.uniamerica.unijobsbackend.services.TipoServicoService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.List;
-import java.util.Optional;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
-//@AutoConfigureMockMvc
-//@WebMvcTest
-//@RunWith(MockitoJUnitRunner.class)
-//@ExtendWith(MockitoExtension.class)
-@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ServicoTest {
 
-    @Mock
-    private ServicoRepository repository;
+    @Autowired
+    private MockMvc mockMvc;
 
-    @Mock
-    private TipoServicoRepository tipoServicoRepository;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    @Mock
-    private TipoServicoService tipoServicoService;
+    @Autowired
+    private ServicoRepository servicoRepository;
 
-    @InjectMocks
-    private TipoServicoController TestClassController;
+    @MockBean
+    private UserService userService;
 
-    @DisplayName("Trazer todos os Tipos Serviços")
-    @Test
-    void shouldReturnSuccess_FindAllTipoServices() {
+    @MockBean
+    private JwtTokenUtil jwtTokenUtil;
 
-        TipoServico tipoServico1 = new TipoServico(1,"Manutenção", "manutencao em computadores");
-        tipoServicoRepository.save(tipoServico1);
+    @MockBean
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-        ResponseEntity<List<TipoServicoDTO>> listTipoServicos = TestClassController.listar();
+    String url = "/servicos";
 
-        //then
-        assertThat(listTipoServicos).isNotNull();
-        assertThat(listTipoServicos.getStatusCode()).isEqualTo(HttpStatus.OK);
+    private MvcResult createUser() throws Exception {
+
+        TipoUsuario tipoUsuario = new TipoUsuario();
+        tipoUsuario.setId(1);
+
+        Usuario newUser = new Usuario(0,"willianthiagofozz@hotmail.com", "Wilian", "1234567", "501359", "45999292659", tipoUsuario);
+
+        String content = objectMapper.writeValueAsString(newUser);
+        String UserUrl = "/register";
+
+        return mockMvc.perform(
+                post(UserUrl)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content)
+        ).andReturn();
     }
 
-    @DisplayName("Registrar um novo Tipo Serviço")
-    @Test
-    void shouldCreateTipoServicos_ReturnSucess() {
+    private MvcResult createTipoServico() throws Exception {
 
-        // cenario
-        TipoServico tipoServicoteste = new TipoServico(1,"Manutenção", "manutencao em computadores");
+        TipoServico tipoServico = new TipoServico(0, "Manutenção", "manutenção de computadores");
 
-        ResponseEntity<TipoServico> result = TestClassController.cadastrar(tipoServicoteste);
+        String content = objectMapper.writeValueAsString(tipoServico);
+        String TipoUrl = "/tiposServicos";
 
-        ResponseEntity<List<TipoServicoDTO>> listTipoServicos = TestClassController.listar();
-
-        //then
-        assertThat(listTipoServicos).isNotNull();
-
+        return mockMvc.perform(
+                post(TipoUrl)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content)
+        ).andReturn();
     }
 
-    @DisplayName("Deletar um Tipo Serviço")
     @Test
-    void shouldDestroyTipoServico() {
-
-        TipoServico tipoServicoteste = new TipoServico(1,"Manutenção", "manutencao em computadores");
-
-        ResponseEntity<TipoServico> cad = TestClassController.cadastrar(tipoServicoteste);
-        tipoServicoRepository.save(tipoServicoteste);
-        String result = TestClassController.deletar(1);
-
-        assertThat(cad.getStatusCode()).isEqualTo(HttpStatus.OK);
-
+    @Order(1)
+    void shouldGetAllTipoServico() throws Exception {
+        String url = "/tiposServicos";
+        mockMvc.perform(
+                MockMvcRequestBuilders.get(url)
+        ).andExpect(status().isOk());
     }
 
-    @DisplayName("Atualizar um Tipo Serviço")
-    @Test
-    void shouldUpdateTipoServico() {
-        // cenario
-        TipoServico tipoServicoteste = new TipoServico(1,"Manutenção", "manutencao em computadores");
-        TipoServico novoTipoServico = new TipoServico("Aulas de Musica", "Aulas de Musica");
-        tipoServicoRepository.save(tipoServicoteste);
+    /*@Test
+    @Order(2)
+    void shouldCreateaNewServico() throws Exception {
+        MvcResult mvcResult = createTipoServico();
+        MvcResult mvcResultUser = createUser();
 
-        when(tipoServicoRepository.findById(any())).thenReturn(Optional.of(tipoServicoteste));
+        Usuario user = objectMapper.readValue(mvcResultUser.getResponse().getContentAsByteArray(), Usuario.class);
 
-        Assertions.assertDoesNotThrow(() -> TestClassController.atualizar(novoTipoServico, 1));
-    }
+        TipoServico tipoServico = objectMapper.readValue(mvcResult.getResponse().getContentAsByteArray(), TipoServico.class);
 
-    @DisplayName("Busca Tipo Serviço por id")
-    @Test
-    void shouldaFindTipoServicoForId() {
-        // cenario
-        TipoServico tipoServicoteste = new TipoServico(1,"Manutenção", "manutencao em computadores");
-        tipoServicoRepository.save(tipoServicoteste);
+        //Servico servico = new Servico(1,"Java", "curso de java", 300.00, "tttt", true, 10, tipoServico.getId_tipo_servico(), user.getId());
+        //Servico servico = new Servico(1,"Java", "curso de java", 500.0, "tttt",true, 10, tipo, usuario);
 
-        when(tipoServicoRepository.findById(any())).thenReturn(Optional.of(tipoServicoteste));
+        String content = objectMapper.writeValueAsString(servico);
 
-        Assertions.assertDoesNotThrow(() -> TestClassController.servicosByTipoServicos(1));
-    }
+        mockMvc.perform(
+                post(url)
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
+    }*/
 }

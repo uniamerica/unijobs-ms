@@ -14,6 +14,7 @@ import java.util.List;
 @ToString
 @RequiredArgsConstructor
 @Entity
+@Data
 @Table(name = "tipos_servico")
 public class TipoServico {
 
@@ -60,4 +61,5 @@ public class TipoServico {
     public int hashCode() {
         return 1145590354;
     }
+
 }
