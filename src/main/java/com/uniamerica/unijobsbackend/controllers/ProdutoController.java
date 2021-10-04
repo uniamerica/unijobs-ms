@@ -30,13 +30,13 @@ public class ProdutoController {
 
     @Autowired
     private ModelMapper modelMapper;
-
+/*
     @GetMapping
     @Operation(summary = "Retorna uma lista de Produtos")
-    public Page<ProdutoDTO> visualizar(Pageable pageable){
-        return produtoService.VisualizarProduto(pageable)
+    public Page<ProdutoDTO> visualizar(){
+        return produtoService.VisualizarProduto()
                 .map(this::toProdutoDTO);
-    }
+    }*/
 
     @PostMapping
     @Operation(summary = "Cadastra um Produto.")
@@ -55,7 +55,7 @@ public class ProdutoController {
     @DeleteMapping(path = "{id_produto}")
     @Operation(summary = "Deleta um Produto.")
     @ResponseStatus(HttpStatus.OK)
-    public String deletar(@PathVariable("id_produto") Integer id_produto){
+    public Produto deletar(@PathVariable("id_produto") Integer id_produto){
         return produtoService.DeletarProduto(id_produto);
     }
 

@@ -1,19 +1,18 @@
 package com.uniamerica.unijobsbackend.services;
 
 import com.uniamerica.unijobsbackend.Excessoes.RecursoNaoEncontradoExcessao;
-import com.uniamerica.unijobsbackend.dto.ServicoDTO;
 import com.uniamerica.unijobsbackend.models.Produto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioProduto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioTipoProduto;
 import com.uniamerica.unijobsbackend.models.TipoProduto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TipoProdutoService {
@@ -38,7 +37,7 @@ public class TipoProdutoService {
 
     public String DeletarTipoProduto(Integer id_tipoProduto) {
         boolean existe = repositorioTipoProduto.existsById(id_tipoProduto);
-        if(!existe){
+        if(existe){
             throw new IllegalStateException("Categoria não Existe. id: " + id_tipoProduto);
         }
         repositorioTipoProduto.deleteById(id_tipoProduto);
@@ -49,15 +48,24 @@ public class TipoProdutoService {
     public TipoProduto EditarTipoProduto(Integer id_tipoProduto, TipoProduto tipoProduto) {
         TipoProduto tipoProduto1 = repositorioTipoProduto.findById(id_tipoProduto)
                 .orElseThrow(
-                        () -> new IllegalStateException("Produto não Existe. id: " + id_tipoProduto)
-                );
-        if(tipoProduto.getNome() != null && !Objects.equals(tipoProduto1.getNome(), tipoProduto.getNome())){
-            tipoProduto1.setNome(tipoProduto.getNome());
-        }
-        if (tipoProduto.getDescricao() != null && !Objects.equals(tipoProduto1.getDescricao(), tipoProduto.getDescricao())){
-            tipoProduto1.setDescricao(tipoProduto.getDescricao());
-        }
+                        () -> new RecursoNaoEncontradoExcessao("TipoProduto não Existe. id: " + id_tipoProduto)
+        );
+
+        if(tipoProduto.getNome() != null && !Objects.equals(tipoProduto1.getNome(), tipoProduto.getNome())){tipoProduto1.setNome(tipoProduto.getNome()); }
+        if (tipoProduto.getDescricao() != null && !Objects.equals(tipoProduto1.getDescricao(), tipoProduto.getDescricao())){tipoProduto1.setDescricao(tipoProduto.getDescricao());}
+        tipoProduto1.setId_tipo_produto(tipoProduto.getId_tipo_produto());
+
         return tipoProduto1;
+    }
+
+    public TipoProduto BuscarTipoProduto(Integer id) {
+        Optional<TipoProduto> tipo = repositorioTipoProduto.findById(id);
+        var i = tipo.isPresent();
+        if (i){
+            return tipo.get();
+        } else {
+            return null;
+        }
     }
 
     public void validacaoNome(String nome){
@@ -72,7 +80,7 @@ public class TipoProdutoService {
                 .orElseThrow(
                         () -> new RecursoNaoEncontradoExcessao("Tipo Produto não Encontrado! id:" + id)
                 );
-        List<Produto> produtos = repositorioProduto.findByTipoProduto(tipoProduto);
+        List<Produto> produtos = repositorioProduto.findByTipoProduto(tipoProduto, PageRequest.of(0, 5));
         return produtos;
     }
 }

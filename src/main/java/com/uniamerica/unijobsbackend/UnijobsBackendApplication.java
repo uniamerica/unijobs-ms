@@ -8,6 +8,7 @@ public class UnijobsBackendApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(UnijobsBackendApplication.class, args);
+
     }
 
 }

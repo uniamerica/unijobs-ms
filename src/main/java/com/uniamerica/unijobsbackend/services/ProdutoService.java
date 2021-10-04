@@ -15,7 +15,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ProdutoService {
@@ -34,16 +39,18 @@ public class ProdutoService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public Page<Produto> VisualizarProduto(Pageable pageable){
-        return repositorioProduto.findAll(pageable);
+    public List<Produto> VisualizarProduto(){
+        return repositorioProduto.findAll();
     }
 
     public Produto CadastrarProduto(Produto produto) {
 
+
         try{
             Integer id_tipo_produto = produto.getTipoProduto().getId_tipo_produto();
             Integer id_usuario = produto.getUsuario().getId();
-        } catch(Error error){
+        }
+        catch(Error error){
             new RecursoNaoEncontradoExcessao();
         }
 
@@ -55,14 +62,11 @@ public class ProdutoService {
             () -> new RecursoNaoEncontradoExcessao("Categoria não Encontrada! id:" + id_tipo_produto)
           );
 
-        var usuario = usuarioRepository.findById(id_usuario)
-            .orElseThrow(
-                () -> new RecursoNaoEncontradoExcessao("Usuario não Encontrado! id:" + id_usuario)
-            );
-
-        produto.setTipoProduto(produto.getTipoProduto());
-        produto.setAtivo(produto.getAtivo());
-        produto.setUsuario(produto.getUsuario());
+        try{
+            var usuario = usuarioRepository.findById(id_usuario);
+        } catch(NullPointerException nullPointerException) {
+            return null;
+        }
 
         String minituraUrl = uploadMiniatura(produto.getMiniatura());
         produto.setMiniatura(minituraUrl);
@@ -70,24 +74,18 @@ public class ProdutoService {
         return repositorioProduto.save(produto);
     }
 
-    public String DeletarProduto(Integer id) {
-
-
-        boolean existe = repositorioProduto.existsById(id);
-
-        if(existe){
-            throw new RecursoNaoEncontradoExcessao("Produto não Existe. id: " + id);
-        }
+    public Produto DeletarProduto(Integer id) {
+        Produto produto1 = repositorioProduto.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoExcessao("Produto não Existe. id: " + id));
         repositorioProduto.deleteById(id);
-        return "Produto deletado com sucesso!";
-    }
+        return produto1;
+        }
 
     @Transactional
     public Produto EditarProduto(Integer id, Produto novoProduto) {
         Produto produto1 = repositorioProduto.findById(id)
-                .orElseThrow(
-                        () -> new IllegalStateException("Produto não Existe. id: " + id)
-                );
+                .orElseThrow(() -> new RecursoNaoEncontradoExcessao("Produto não Existe. id: " + id));
+        novoProduto.setId_produto(produto1.getId_produto());
         produto1.setTitulo(novoProduto.getTitulo());
         produto1.setDescricao(novoProduto.getDescricao());
         produto1.setMiniatura(novoProduto.getMiniatura());
@@ -99,18 +97,19 @@ public class ProdutoService {
     }
 
     public Produto BuscarProduto(Integer id) {
-        return repositorioProduto.findById(id).orElseThrow(
-            () -> new IllegalStateException("Produto não Existe. id: " + id)
-        );
+        Produto p = repositorioProduto.findById(id)
+                .orElseThrow( () -> new RecursoNaoEncontradoExcessao("Produto não Existe. id: " + id) );
+        return p;
     }
 
     private String uploadMiniatura(String miniatura) {
         Cloudinary cloudinary = CloudinarySingleton.getCloudinary();
+        File file = new File(miniatura);
         try {
-            var uploadResult = cloudinary.uploader().upload(miniatura, ObjectUtils.emptyMap());
+            Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
             return (String) uploadResult.get("url");
-        } catch (IOException e) {
-            return null;
+        } catch (NullPointerException | IOException e) {
+            return "miniatura não encontrada";
         }
     }
 }
