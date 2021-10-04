@@ -63,7 +63,7 @@ class ServicoServiceTest {
                 .descricao("joj")
                 .titulo("teste")
                 .preco(10.0)
-                .miniatura("ttttt")
+                .miniatura("http://res.cloudinary.com/unijobs/image/upload/v1633275994/blvw1jozgdynmrtocgzx.jpg")
                 .build();
 
         //when (Simulação)
@@ -206,7 +206,7 @@ class ServicoServiceTest {
                 .descricao("joj")
                 .titulo("teste")
                 .preco(10.0)
-                .miniatura("ttttt")
+                .miniatura("http://res.cloudinary.com/unijobs/image/upload/v1633275994/blvw1jozgdynmrtocgzx.jpg")
                 .build();
 
         Mockito.when(repository.findById(servico.getId_servico())).thenReturn(java.util.Optional.of(servico));

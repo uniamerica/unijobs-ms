@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uniamerica.unijobsbackend.auth.config.JwtAuthenticationEntryPoint;
 import com.uniamerica.unijobsbackend.auth.config.JwtTokenUtil;
 import com.uniamerica.unijobsbackend.auth.services.UserService;
+import com.uniamerica.unijobsbackend.dto.input.NovoServicoDTO;
 import com.uniamerica.unijobsbackend.models.Servico;
 import com.uniamerica.unijobsbackend.models.TipoServico;
 import com.uniamerica.unijobsbackend.models.TipoUsuario;
@@ -53,7 +54,7 @@ class ServicoTest {
 
     String url = "/servicos";
 
-    private MvcResult createUser() throws Exception {
+    /*private MvcResult createUser() throws Exception {
 
         TipoUsuario tipoUsuario = new TipoUsuario();
         tipoUsuario.setId(1);
@@ -68,7 +69,7 @@ class ServicoTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content)
         ).andReturn();
-    }
+    }*/
 
     private MvcResult createTipoServico() throws Exception {
 
@@ -87,24 +88,18 @@ class ServicoTest {
     @Test
     @Order(1)
     void shouldGetAllTipoServico() throws Exception {
-        String url = "/tiposServicos";
         mockMvc.perform(
                 MockMvcRequestBuilders.get(url)
         ).andExpect(status().isOk());
     }
 
-    /*@Test
+    @Test
     @Order(2)
     void shouldCreateaNewServico() throws Exception {
         MvcResult mvcResult = createTipoServico();
-        MvcResult mvcResultUser = createUser();
-
-        Usuario user = objectMapper.readValue(mvcResultUser.getResponse().getContentAsByteArray(), Usuario.class);
-
         TipoServico tipoServico = objectMapper.readValue(mvcResult.getResponse().getContentAsByteArray(), TipoServico.class);
 
-        //Servico servico = new Servico(1,"Java", "curso de java", 300.00, "tttt", true, 10, tipoServico.getId_tipo_servico(), user.getId());
-        //Servico servico = new Servico(1,"Java", "curso de java", 500.0, "tttt",true, 10, tipo, usuario);
+        NovoServicoDTO servico = new NovoServicoDTO("Java", "curso de java", 500.0, "http://res.cloudinary.com/unijobs/image/upload/v1633275994/blvw1jozgdynmrtocgzx.jpg", 10, tipoServico.getId_tipo_servico(), 1);
 
         String content = objectMapper.writeValueAsString(servico);
 
@@ -114,5 +109,36 @@ class ServicoTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
+    }
+
+    /*@Test
+    @Order(3)
+    void shouldUpdateServico() throws Exception {
+        shouldCreateaNewServico();
+
+        MvcResult mvcResult = createTipoServico();
+        TipoServico tipoServico = objectMapper.readValue(mvcResult.getResponse().getContentAsByteArray(), TipoServico.class);
+
+        NovoServicoDTO servicoUpdate = new NovoServicoDTO("Curso de Java", "tudo sobre java", 300.0, "http://res.cloudinary.com/unijobs/image/upload/v1633275994/blvw1jozgdynmrtocgzx.jpg", 10, tipoServico.getId_tipo_servico(), 1);
+
+        String content = objectMapper.writeValueAsString(servicoUpdate);
+
+        mockMvc.perform(
+                put(url + "/{id}", 1L)
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
+    }
+
+    @Test
+    @Order(4)
+    void shouldDeleteServicoById() throws Exception {
+        shouldCreateaNewServico();
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete(url + "/{id}", 1L)
+        ).andExpect(status().isOk());
     }*/
+
 }
