@@ -6,7 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the development branch
   push:
-    branches: [ development ]
+    branches: [ development, main, master ]
   pull_request:
     branches: [ development ]
 
@@ -26,7 +26,7 @@ jobs:
       ports: 
         - "3306:3306"
    steps:
-     - name: 'running tests'
+     - name: 'Running tests'
        run: |
-        ./mvnw tests
-     
+         ./mvnw tests
+    
