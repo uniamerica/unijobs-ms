@@ -29,12 +29,14 @@ public class TipoUsuarioService {
     public TipoUsuario update(TipoUsuario tipoUsuario) {
         return tipoUsuarioRepository.save(tipoUsuario);
     }
-    public void destroy(Integer id) {
+    public String destroy(Integer id) {
         Optional<TipoUsuario> optionalTipoUsuario = this.show(id);
 
         if (optionalTipoUsuario.isPresent()) {
             tipoUsuarioRepository.deleteById(id);
+
         }
+        return "Tipo Usuario deletado com sucesso!";
     }
 
 
