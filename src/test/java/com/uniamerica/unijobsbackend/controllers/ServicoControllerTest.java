@@ -4,6 +4,7 @@ import com.uniamerica.unijobsbackend.auth.config.JwtAuthenticationEntryPoint;
 import com.uniamerica.unijobsbackend.auth.config.JwtTokenUtil;
 import com.uniamerica.unijobsbackend.auth.services.UserService;
 import com.uniamerica.unijobsbackend.dto.ServicoDTO;
+import com.uniamerica.unijobsbackend.dto.input.NovoServicoDTO;
 import com.uniamerica.unijobsbackend.models.Servico;
 import com.uniamerica.unijobsbackend.models.TipoServico;
 import com.uniamerica.unijobsbackend.services.ServicoService;
@@ -18,7 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ServicoController.class)
@@ -42,11 +43,8 @@ class ServicoControllerTest {
     @Test
     void findAll() throws Exception {
         Page<ServicoDTO> servicoDTO = Mockito.mock(Page.class);
-        //given
         Pageable pageable = PageRequest.of(1, 10);
-
         when(service.findAll(pageable)).thenReturn(servicoDTO);
-
         String url = "/servicos";
         mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
     }
@@ -71,14 +69,47 @@ class ServicoControllerTest {
     }
 
     @Test
-    void cadastrar() {
+    void cadastrar() throws Exception {
+        NovoServicoDTO teste =  NovoServicoDTO.builder()
+                .titulo("titleTest")
+                .descricao("Teste")
+                .preco(1.0)
+                .miniatura("min")
+                .prazo(1)
+                .id_tipo_servico(1)
+                .id_usuario(1).build();
+        String url = "/servicos/cadastrar";
+        mockMvc.perform(post(url, teste))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void atualizar() {
+    void atualizar() throws Exception {
+        NovoServicoDTO teste =  NovoServicoDTO.builder()
+                .titulo("titleTest")
+                .descricao("Teste")
+                .preco(1.0)
+                .miniatura("min")
+                .prazo(1)
+                .id_tipo_servico(1)
+                .id_usuario(1).build();
+        String url = "/servicos/{id}";
+        mockMvc.perform(put(url, teste, teste.getId_tipo_servico()))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void deletar() {
+    void deletar() throws Exception {
+        NovoServicoDTO teste =  NovoServicoDTO.builder()
+                .titulo("titleTest")
+                .descricao("Teste")
+                .preco(1.0)
+                .miniatura("min")
+                .prazo(1)
+                .id_tipo_servico(1)
+                .id_usuario(1).build();
+        String url = "/servicos/{id}";
+        mockMvc.perform(delete(url, teste.getId_tipo_servico()))
+                .andExpect(status().isOk());
     }
 }
