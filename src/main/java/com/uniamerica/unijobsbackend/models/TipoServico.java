@@ -14,6 +14,7 @@ import java.util.List;
 @ToString
 @RequiredArgsConstructor
 @Entity
+@Data
 @Table(name = "tipos_servico")
 public class TipoServico {
 
@@ -37,8 +38,18 @@ public class TipoServico {
         this.descricao = descricao;
     }
 
+    public TipoServico(Integer id_tipo_servico, String nome, String descricao) {
+        this.id_tipo_servico = id_tipo_servico;
+        this.nome = nome;
+        this.descricao = descricao;
+    }
+
     public TipoServico(Integer id_tipo_servico) {
         this.id_tipo_servico = id_tipo_servico;
+    }
+
+    public TipoServico(String nome) {
+        this.nome = nome;
     }
 
     @Override
@@ -54,4 +65,5 @@ public class TipoServico {
     public int hashCode() {
         return 1145590354;
     }
+
 }

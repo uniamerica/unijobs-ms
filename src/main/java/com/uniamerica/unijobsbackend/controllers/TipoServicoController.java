@@ -34,7 +34,7 @@ public class TipoServicoController {
     @Operation(summary = "cadastra um Tipo Serviço")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<TipoServicoDTO> cadastrar(@Valid @RequestBody TipoServico tipoServico){
+    public ResponseEntity<TipoServico> cadastrar(@Valid @RequestBody TipoServico tipoServico){
         return ResponseEntity.ok(tipoServicoService.novoTipoServico(tipoServico));
     }
 

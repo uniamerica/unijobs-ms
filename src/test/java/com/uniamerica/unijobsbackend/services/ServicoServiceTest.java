@@ -4,8 +4,10 @@ import com.uniamerica.unijobsbackend.Excessoes.RecursoNaoEncontradoExcessao;
 import com.uniamerica.unijobsbackend.dto.ServicoDTO;
 import com.uniamerica.unijobsbackend.models.Servico;
 import com.uniamerica.unijobsbackend.models.TipoServico;
+import com.uniamerica.unijobsbackend.models.Usuario;
 import com.uniamerica.unijobsbackend.repositories.ServicoRepository;
 import com.uniamerica.unijobsbackend.repositories.TipoServicoRepository;
+import com.uniamerica.unijobsbackend.repositories.UsuarioRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -23,20 +25,34 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
 
-@ExtendWith(MockitoExtension.class)
+
+@ExtendWith(SpringExtension.class)
 class ServicoServiceTest {
+
+    @InjectMocks
+    private ServicoService underTest;
 
     @Mock
     private ServicoRepository repository;
+
     @Mock
     private TipoServicoRepository tipoServicoRepository;
 
-    private ServicoService underTest;
+    @Mock
+    private UsuarioRepository usuarioRepository;
+
 
     @BeforeEach
     void setUp() {
         underTest = new ServicoService(repository, tipoServicoRepository);
+    }
+
+    private ServicoDTO mudarMiniaturaparaNova(ServicoDTO newServicoDTO){
+        newServicoDTO.setMiniatura("http://res.cloudinary.com/unijobs/image/upload/v1633275994/blvw1jozgdynmrtocgzx.jpg");
+        return newServicoDTO;
     }
 
     @Test
@@ -45,7 +61,7 @@ class ServicoServiceTest {
         //given
         Pageable pageable = PageRequest.of(1, 10);
         // when
-        Mockito.when(repository.findAll(pageable)).thenReturn(servicos);
+        when(repository.findAll(pageable)).thenReturn(servicos);
         underTest.findAll(pageable);
 
         //then
@@ -54,33 +70,33 @@ class ServicoServiceTest {
 
     @Test
     void shouldStoreServico() {
-        // given (Cenario, dados de entrada)
-        TipoServico tipoServico = new TipoServico(1);
 
-        Servico servico = Servico.builder()
-                .tipoServico(tipoServico)
-                .ativo(true)
-                .descricao("joj")
-                .titulo("teste")
-                .preco(10.0)
-                .miniatura("ttttt")
-                .build();
+        TipoServico tiposervico = new TipoServico(1);
+        Usuario usuario = new Usuario(1);
 
-        //when (Simulação)
-        Mockito.when(repository.save(servico)).thenAnswer(service -> {
-            Servico servicoSalvo = service.getArgument(0);
-            servicoSalvo.setId_servico(1);
-            return servicoSalvo;
-        });
-        Mockito.when(tipoServicoRepository.findById(tipoServico.getId_tipo_servico())).thenReturn(java.util.Optional.of(tipoServico));
-        // Ação
-        var result = underTest.store(servico);
+        Servico newServico = new Servico(
+                1,
+                "Python",
+                "Aulas de Python",
+                100.0,
+                "http://res.cloudinary.com/unijobs/image/upload/v1633275994/blvw1jozgdynmrtocgzx.jpg",
+                false,
+                10,
+                tiposervico,
+                usuario
+        );
 
-        //then (Verificação)
-        assertThat(result.getId()).isEqualTo(1);
-        assertThat(result).isNotNull();
-        assertThat(result.getDescricao()).isEqualTo("joj");
-//        assertThat(result).isEqualTo();
+        ServicoDTO newServicoDTO = new ServicoDTO(newServico);
+
+        when(tipoServicoRepository.findById(any())).thenReturn(Optional.of(tiposervico));
+        when(usuarioRepository.findById(any())).thenReturn(Optional.of(usuario));
+        when(repository.save(any())).thenReturn(newServico);
+        when(repository.findById(any())).thenReturn(Optional.of(newServico));
+
+        assertThat(newServicoDTO.getId()).isEqualTo(1);
+        assertThat(newServicoDTO).isNotNull();
+        Assertions.assertEquals(newServicoDTO, mudarMiniaturaparaNova(underTest.store(newServico)));
+        Assertions.assertEquals(newServicoDTO, mudarMiniaturaparaNova(underTest.find(newServico.getId_servico())));
     }
 
     @Test
@@ -96,7 +112,7 @@ class ServicoServiceTest {
                 .build();
 
         //when (Simulação)
-        Mockito.when(tipoServicoRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.empty());
+        when(tipoServicoRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.empty());
 
         //then (Verificação)
         assertThatThrownBy(() -> underTest.store(servico)).isInstanceOf(RecursoNaoEncontradoExcessao.class);
@@ -115,7 +131,7 @@ class ServicoServiceTest {
                 .build();
 
         // simulação
-        Mockito.when(repository.findById(servico.getId_servico())).thenReturn(java.util.Optional.of(servico));
+        when(repository.findById(servico.getId_servico())).thenReturn(java.util.Optional.of(servico));
         var result = underTest.destroy(servico.getId_servico());
 
         assertThat(result).isEqualTo("Serviço deletado com sucesso!");
@@ -134,32 +150,57 @@ class ServicoServiceTest {
                 .build();
 
         // simulação
-        Mockito.when(repository.findById(ArgumentMatchers.any())).thenReturn(Optional.empty());
+        when(repository.findById(ArgumentMatchers.any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> underTest.destroy(servico.getId_servico())).isInstanceOf(RecursoNaoEncontradoExcessao.class);
     }
 
     @Test
     void shouldUpdateServico() {
-        TipoServico tipoServico = new TipoServico(1);
-        Servico servico = Servico.builder()
-            .tipoServico(tipoServico)
-            .ativo(true)
-            .descricao("joj")
-            .titulo("teste")
-            .preco(10.0)
-            .miniatura("ttttt")
-            .build();
 
-        Mockito.when(repository.findById(servico.getId_servico())).thenReturn(java.util.Optional.of(servico));
-        Mockito.when(tipoServicoRepository.findById(tipoServico.getId_tipo_servico())).thenReturn(java.util.Optional.of(tipoServico));
+        TipoServico tiposervico = new TipoServico(1);
+        Usuario usuario = new Usuario(1);
 
-        var result = underTest.update(servico.getId_servico(), servico);
+        Servico newServico = new Servico(
+                1,
+                "Python",
+                "Aulas de Python",
+                100.0,
+                "http://res.cloudinary.com/unijobs/image/upload/v1633275994/blvw1jozgdynmrtocgzx.jpg",
+                false,
+                10,
+                tiposervico,
+                usuario
+        );
+
+        Servico newServicoForUpdate = new Servico(
+                1,
+                "Java",
+                "Aulas de Java",
+                10.0,
+                "http://res.cloudinary.com/unijobs/image/upload/v1633275994/blvw1jozgdynmrtocgzx.jpg",
+                false,
+                15,
+                tiposervico,
+                usuario
+        );
+
+        ServicoDTO newServicoDTO = new ServicoDTO(newServico);
+
+        when(tipoServicoRepository.findById(any())).thenReturn(Optional.of(tiposervico));
+        when(usuarioRepository.findById(any())).thenReturn(Optional.of(usuario));
+        when(repository.save(any())).thenReturn(newServico);
+        when(repository.findById(any())).thenReturn(Optional.of(newServico));
+
+        var result = underTest.update(newServico.getId_servico(), newServicoForUpdate);
+
+        assertThat(newServicoDTO.getId()).isEqualTo(1);
+        assertThat(newServicoDTO).isNotNull();
 
         assertThat(result)
                 .isNotNull()
-                .isEqualTo(new ServicoDTO(servico));
-        assertThat(result.getId()).isEqualTo(servico.getId_servico());
+                .isEqualTo(new ServicoDTO(newServico));
+        assertThat(result.getId()).isEqualTo(newServico.getId_servico());
     }
 
     @Test
@@ -174,7 +215,7 @@ class ServicoServiceTest {
                 .miniatura("ttttt")
                 .build();
 
-        Mockito.when(repository.findById(ArgumentMatchers.any())).thenReturn(Optional.empty());
+        when(repository.findById(ArgumentMatchers.any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> underTest.update(servico.getId_servico(), servico)).isInstanceOf(RecursoNaoEncontradoExcessao.class);
     }
@@ -191,31 +232,44 @@ class ServicoServiceTest {
                 .miniatura("ttttt")
                 .build();
 
-        Mockito.when(repository.findById(servico.getId_servico())).thenReturn(java.util.Optional.of(servico));
-        Mockito.when(tipoServicoRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.empty());
+        when(repository.findById(servico.getId_servico())).thenReturn(java.util.Optional.of(servico));
+        when(tipoServicoRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> underTest.update(servico.getId_servico(), servico)).isInstanceOf(RecursoNaoEncontradoExcessao.class);
     }
 
     @Test
     void shouldFindServico() {
-        TipoServico tipoServico = new TipoServico(1);
-        Servico servico = Servico.builder()
-                .tipoServico(tipoServico)
-                .ativo(true)
-                .descricao("joj")
-                .titulo("teste")
-                .preco(10.0)
-                .miniatura("ttttt")
-                .build();
 
-        Mockito.when(repository.findById(servico.getId_servico())).thenReturn(java.util.Optional.of(servico));
+        TipoServico tiposervico = new TipoServico(1);
+        Usuario usuario = new Usuario(1);
 
-        var result = underTest.find(servico.getId_servico());
+        Servico newServico = new Servico(
+                1,
+                "Python",
+                "Aulas de Python",
+                100.0,
+                "http://res.cloudinary.com/unijobs/image/upload/v1633275994/blvw1jozgdynmrtocgzx.jpg",
+                false,
+                10,
+                tiposervico,
+                usuario
+        );
 
+        ServicoDTO newServicoDTO = new ServicoDTO(newServico);
+
+        when(tipoServicoRepository.findById(any())).thenReturn(Optional.of(tiposervico));
+        when(usuarioRepository.findById(any())).thenReturn(Optional.of(usuario));
+        when(repository.save(any())).thenReturn(newServico);
+        when(repository.findById(any())).thenReturn(Optional.of(newServico));
+
+        var result = underTest.find(newServico.getId_servico());
+
+        assertThat(newServicoDTO.getId()).isEqualTo(1);
+        assertThat(newServicoDTO).isNotNull();
         assertThat(result)
                 .isNotNull()
-                .isEqualTo(new ServicoDTO(servico));
+                .isEqualTo(new ServicoDTO(newServico));
     }
 
     @Test
@@ -230,7 +284,7 @@ class ServicoServiceTest {
                 .miniatura("ttttt")
                 .build();
 
-        Mockito.when(repository.findById(ArgumentMatchers.any())).thenReturn(Optional.empty());
+        when(repository.findById(ArgumentMatchers.any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> underTest.find(servico.getId_servico())).isInstanceOf(RecursoNaoEncontradoExcessao.class);
     }

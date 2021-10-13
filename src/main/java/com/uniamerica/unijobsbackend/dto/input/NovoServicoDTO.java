@@ -32,6 +32,16 @@ public class NovoServicoDTO {
     @NotNull(message = "O Usuario é obrigatório")
     private Integer id_usuario;
 
+    public NovoServicoDTO(String titulo, String descricao, double preco, String miniatura, Integer prazo, Integer id_tipo_servico, Integer id_usuario) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.miniatura = miniatura;
+        this.prazo = prazo;
+        this.id_tipo_servico = id_tipo_servico;
+        this.id_usuario = id_usuario;
+    }
+
     public Servico converteModelo(){
         Servico servico = new Servico();
         servico.setTitulo(titulo);

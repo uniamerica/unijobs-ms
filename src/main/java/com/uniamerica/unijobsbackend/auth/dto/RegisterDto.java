@@ -17,6 +17,14 @@ public class RegisterDto {
     @NotNull
     private  String ra;
 
+    public RegisterDto(String email, String senha, String nome, String celular, String ra) {
+        this.email = email;
+        this.senha = senha;
+        this.nome = nome;
+        this.celular = celular;
+        this.ra = ra;
+    }
+
     public Usuario toModel(){
         Usuario usuario = new Usuario();
         usuario.setEmail(email);
