@@ -2,6 +2,7 @@ name: Heroku Deployment_UNIJOBS
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
