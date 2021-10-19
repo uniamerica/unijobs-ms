@@ -5,13 +5,14 @@ import com.uniamerica.unijobsbackend.auth.config.JwtAuthenticationEntryPoint;
 import com.uniamerica.unijobsbackend.auth.config.JwtTokenUtil;
 import com.uniamerica.unijobsbackend.auth.services.UserService;
 import com.uniamerica.unijobsbackend.dto.input.NovoServicoDTO;
-import com.uniamerica.unijobsbackend.models.Servico;
 import com.uniamerica.unijobsbackend.models.TipoServico;
 import com.uniamerica.unijobsbackend.models.TipoUsuario;
 import com.uniamerica.unijobsbackend.models.Usuario;
 import com.uniamerica.unijobsbackend.repositories.ServicoRepository;
-import com.uniamerica.unijobsbackend.repositories.TipoServicoRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -21,11 +22,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -54,22 +53,25 @@ class ServicoTest {
 
     String url = "/servicos";
 
-    /*private MvcResult createUser() throws Exception {
-
+    private Usuario createUser() throws Exception {
         TipoUsuario tipoUsuario = new TipoUsuario();
-        tipoUsuario.setId(1);
-
-        Usuario newUser = new Usuario(0,"willianthiagofozz@hotmail.com", "Wilian", "1234567", "501359", "45999292659", tipoUsuario);
+        Usuario newUser = new Usuario(null,
+                "willianthiagofozz@hotmail.com",
+                "Wilian",
+                "1234567",
+                "501359",
+                "45999292659",
+                tipoUsuario);
 
         String content = objectMapper.writeValueAsString(newUser);
         String UserUrl = "/register";
-
-        return mockMvc.perform(
+        MvcResult mvcResult = mockMvc.perform(
                 post(UserUrl)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content)
         ).andReturn();
-    }*/
+        return objectMapper.readValue(mvcResult.getResponse().getContentAsByteArray(), Usuario.class);
+    }
 
     private MvcResult createTipoServico() throws Exception {
 
@@ -96,10 +98,18 @@ class ServicoTest {
     @Test
     @Order(2)
     void shouldCreateaNewServico() throws Exception {
+        Usuario user = createUser();
         MvcResult mvcResult = createTipoServico();
         TipoServico tipoServico = objectMapper.readValue(mvcResult.getResponse().getContentAsByteArray(), TipoServico.class);
 
-        NovoServicoDTO servico = new NovoServicoDTO("Java", "curso de java", 500.0, "http://res.cloudinary.com/unijobs/image/upload/v1633275994/blvw1jozgdynmrtocgzx.jpg", 10, tipoServico.getId_tipo_servico(), 1);
+        NovoServicoDTO servico = new NovoServicoDTO(
+                "Java",
+                "curso de java",
+                500.0,
+                "http://res.cloudinary.com/unijobs/image/upload/v1633275994/blvw1jozgdynmrtocgzx.jpg",
+                10,
+                tipoServico.getId_tipo_servico(),
+                user.getId());
 
         String content = objectMapper.writeValueAsString(servico);
 

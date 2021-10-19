@@ -1,11 +1,10 @@
 package com.uniamerica.unijobsbackend.services;
 
 import com.uniamerica.unijobsbackend.Excessoes.RecursoNaoEncontradoExcessao;
-import com.uniamerica.unijobsbackend.dto.ServicoDTO;
 import com.uniamerica.unijobsbackend.models.Produto;
+import com.uniamerica.unijobsbackend.models.TipoProduto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioProduto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioTipoProduto;
-import com.uniamerica.unijobsbackend.models.TipoProduto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TipoProdutoService {

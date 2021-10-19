@@ -4,9 +4,6 @@ import com.uniamerica.unijobsbackend.models.TipoProduto;
 import com.uniamerica.unijobsbackend.models.TipoServico;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 public class TipoItemDTO {
     private Integer id;

@@ -1,9 +1,7 @@
 package com.uniamerica.unijobsbackend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.uniamerica.unijobsbackend.models.Produto;
 import com.uniamerica.unijobsbackend.models.TipoProduto;
-import com.uniamerica.unijobsbackend.models.Usuario;
 import lombok.Data;
 
 

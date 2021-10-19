@@ -1,6 +1,5 @@
 package com.uniamerica.unijobsbackend.dto;
 
-import com.uniamerica.unijobsbackend.models.Servico;
 import com.uniamerica.unijobsbackend.models.TipoServico;
 import lombok.Data;
 

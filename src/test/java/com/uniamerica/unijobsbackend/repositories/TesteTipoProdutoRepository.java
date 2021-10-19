@@ -1,14 +1,14 @@
 package com.uniamerica.unijobsbackend.repositories;
 
 import com.uniamerica.unijobsbackend.models.TipoProduto;
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 
-import static org.assertj.core.api.Assertions.assertThatObject;
+import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@DataJpaTest
 public class TesteTipoProdutoRepository {
 
     @Autowired
@@ -16,9 +16,11 @@ public class TesteTipoProdutoRepository {
 
     @Test
     public void CriacaoTipoProduto(){
-        TipoProduto teste = new TipoProduto(1, "Comercial", "Produto de carater comercial");
+        TipoProduto teste = new TipoProduto(null, "Comercial", "Produto de carater comercial");
         TipoProduto save = repositorio.save(teste);
-        Assertions.assertEquals(save, teste);
+        teste.setId_tipo_produto(save.getId_tipo_produto());
+
+        assertEquals(save, teste);
     }
 
     @Test
@@ -26,14 +28,13 @@ public class TesteTipoProdutoRepository {
         TipoProduto teste = new TipoProduto(1, "Comercial", "Produto de carater comercial");
         teste.setNome("piriri Pororo");
         TipoProduto save = repositorio.save(teste);
-        Assertions.assertEquals(save.getNome(), teste.getNome());
+        assertEquals(save.getNome(), teste.getNome());
     }
 
     @Test
     public void DeletarTipoProduto(){
-        TipoProduto teste = new TipoProduto(1, "Comercial", "Produto de carater comercial");
+        TipoProduto teste = new TipoProduto(null, "Comercial", "Produto de carater comercial");
         TipoProduto save = repositorio.save(teste);
-        repositorio.deleteById(0);
-        Assertions.assertNotEquals(repositorio.findById(0), teste);
+        assertDoesNotThrow(() -> repositorio.deleteById(save.getId_tipo_produto()));
     }
 }
