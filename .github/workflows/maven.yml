@@ -4,16 +4,12 @@
 name: maven
 
 on:
-  push:
-    branches: [ development ]
   pull_request:
-    branches: [ development ]
+    branches: [ main, master ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
@@ -22,5 +18,5 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
         cache: maven
-    - name: Build with Maven
-      run: mvn package 
+    - name: run tests with maven
+      run: ./mvnw test
