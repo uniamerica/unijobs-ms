@@ -1,4 +1,4 @@
-name: Heroku Deployment_UNIJOBS
+name: Heroku Deployment
 on:
   push:
     branches: [ main ]
