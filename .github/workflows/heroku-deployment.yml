@@ -24,8 +24,6 @@ jobs:
     - name: Deploy to Heroku
       uses: AkhileshNS/heroku-deploy@v3.12.12
       with:
-        usedocker: "true"
-        docker_heroku_process_type: "worker"
         heroku_api_key: ${{secrets.HEROKO_API_KEY_HML}}
         heroku_email: ${{secrets.HEROKO_EMAIL_HML}}
         heroku_app_name: ${{secrets.HEROKO_APP_ID_HML}}
