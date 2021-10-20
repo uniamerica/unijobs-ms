@@ -19,4 +19,4 @@ jobs:
         distribution: 'adopt'
         cache: maven
     - name: run tests with maven
-      run: ./mvnw test
+      run: mvn test
