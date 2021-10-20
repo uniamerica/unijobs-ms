@@ -1,0 +1,19 @@
+version: '3'
+services:
+  database:
+    image: mysql:8
+    container_name: database-unijobs
+    ports:
+      - 3306:3306
+    hostname: database-unijobs
+    volumes:
+      - $HOME/database-volume:/var/lib/mysql
+    environment:
+      MYSLQ_ROOT_PASSWORD: /hackme*
+      MYSQL_DATABASE: unijobs
+      MYSQL_USER: unijobs
+      MYSQL_PASSWORD: CSxa23YNS&z5
+networks:
+  default:
+    external:
+      name: unijobs

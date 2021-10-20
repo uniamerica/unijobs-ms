@@ -1,12 +1,13 @@
 package com.uniamerica.unijobsbackend.models;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(of = {"id_produto", "titulo", "ativo"})
 @Entity
 public class Produto extends BaseEntity {
     @Id

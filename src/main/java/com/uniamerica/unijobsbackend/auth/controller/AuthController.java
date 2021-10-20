@@ -1,7 +1,8 @@
 package com.uniamerica.unijobsbackend.auth.controller;
+
 import com.uniamerica.unijobsbackend.auth.dto.LoginDto;
-import com.uniamerica.unijobsbackend.auth.dto.ResponseTokenDto;
 import com.uniamerica.unijobsbackend.auth.dto.RegisterDto;
+import com.uniamerica.unijobsbackend.auth.dto.ResponseTokenDto;
 import com.uniamerica.unijobsbackend.auth.services.AuthService;
 import com.uniamerica.unijobsbackend.dto.UsuarioDto;
 import com.uniamerica.unijobsbackend.models.Usuario;

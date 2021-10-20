@@ -4,13 +4,10 @@ import com.uniamerica.unijobsbackend.auth.config.JwtAuthenticationEntryPoint;
 import com.uniamerica.unijobsbackend.auth.config.JwtTokenUtil;
 import com.uniamerica.unijobsbackend.auth.services.UserService;
 import com.uniamerica.unijobsbackend.dto.ServicoDTO;
-import com.uniamerica.unijobsbackend.dto.TipoServicoDTO;
-import com.uniamerica.unijobsbackend.dto.input.NovoServicoDTO;
 import com.uniamerica.unijobsbackend.models.Servico;
 import com.uniamerica.unijobsbackend.models.TipoServico;
 import com.uniamerica.unijobsbackend.models.Usuario;
 import com.uniamerica.unijobsbackend.services.ServicoService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,18 +18,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ServicoController.class)

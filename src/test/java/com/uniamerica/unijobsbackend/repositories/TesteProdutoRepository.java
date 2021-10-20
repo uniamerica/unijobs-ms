@@ -1,13 +1,15 @@
 package com.uniamerica.unijobsbackend.repositories;
 
 import com.uniamerica.unijobsbackend.models.Produto;
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 
-import static org.assertj.core.api.Assertions.assertThatObject;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DataJpaTest
 public class TesteProdutoRepository {
@@ -22,9 +24,9 @@ public class TesteProdutoRepository {
 
     @Test
     public void CriacaoProduto(){
-        Produto p = new Produto(0, "produto titulo", "descricao produto", 28.0, "miniatura produto", false, 28, null, null);
+        Produto p = new Produto(null, "produto titulo", "descricao produto", 28.0, "miniatura produto", false, 28, null, null);
         repositorio.save(p);
-        Assertions.assertEquals(repositorio.findById(0), p);
+        Assertions.assertEquals(repositorio.findById(p.getId_produto()).orElseThrow(), p);
     }
 
     @Test
@@ -38,9 +40,8 @@ public class TesteProdutoRepository {
 
     @Test
     public void DeletarProduto(){
-        Produto p = new Produto(0, "produto titulo", "descricao produto", 28.0, "miniatura produto", false, 28, null, null);
+        Produto p = new Produto(null, "produto titulo", "descricao produto", 28.0, "miniatura produto", false, 28, null, null);
         Produto save = repositorio.save(p);
-        repositorio.deleteById(0);
-        Assertions.assertNotEquals(repositorio.findById(0), p);
+        assertDoesNotThrow(() -> repositorio.deleteById(save.getId_produto()));
     }
 }
