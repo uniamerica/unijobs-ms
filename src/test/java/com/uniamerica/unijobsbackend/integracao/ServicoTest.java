@@ -111,7 +111,7 @@ class ServicoTest {
         ).andExpect(status().isOk());
     }
 
-    /*@Test
+    @Test
     @Order(3)
     void shouldUpdateServico() throws Exception {
         shouldCreateaNewServico();
@@ -139,6 +139,6 @@ class ServicoTest {
         mockMvc.perform(
                 MockMvcRequestBuilders.delete(url + "/{id}", 1L)
         ).andExpect(status().isOk());
-    }*/
+    }
 
 }
