@@ -49,7 +49,7 @@ public class NovoServicoDTO {
         servico.setMiniatura(miniatura);
         servico.setPrazo(prazo);
         servico.setTipoServico(new TipoServico(id_tipo_servico));
-        servico.setUsuario(new Usuario(id_usuario));
+        servico.setUsuario(Usuario.builder().id(id_usuario).build());
 
         return servico;
     }

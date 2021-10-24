@@ -62,7 +62,7 @@ class ServicoControllerTest {
     @Test
     void find() throws Exception {
         TipoServico tiposervico = new TipoServico(1);
-        Usuario usuario = new Usuario(1);
+        Usuario usuario = Usuario.builder().id(1).build();
 
         Servico newServico = new Servico(
                 1,

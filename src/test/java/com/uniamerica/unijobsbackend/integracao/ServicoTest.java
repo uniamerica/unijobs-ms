@@ -24,6 +24,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Collections;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -61,7 +63,8 @@ class ServicoTest {
                 "1234567",
                 "501359",
                 "45999292659",
-                tipoUsuario);
+                tipoUsuario,
+                Collections.emptySet());
 
         String content = objectMapper.writeValueAsString(newUser);
         String UserUrl = "/register";
