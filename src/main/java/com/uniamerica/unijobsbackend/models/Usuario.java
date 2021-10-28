@@ -47,4 +47,5 @@ public class Usuario implements Serializable {
     public Usuario(Integer id_usuario) {
         id = id_usuario;
     }
+    
 }

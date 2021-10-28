@@ -18,6 +18,15 @@ public class TipoUsuario {
     @Column(nullable = false)
     private String nome;
 
+    public TipoUsuario(Integer id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+
+    public TipoUsuario(String nome) {
+        this.nome = nome;
+    }
+
 //    @OneToMany
 //    private List<Usuario>usuarios;
 
