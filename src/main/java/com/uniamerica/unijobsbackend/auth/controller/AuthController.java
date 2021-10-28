@@ -9,6 +9,7 @@ import com.uniamerica.unijobsbackend.models.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -24,6 +25,7 @@ public class AuthController {
         String token = service.login(login.getEmail(), login.getPassword());
         return ResponseEntity.ok(new ResponseTokenDto(token));
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/register")
     @ResponseStatus(HttpStatus.CREATED)
     public UsuarioDto saveUser(@RequestBody RegisterDto user) throws Exception {
