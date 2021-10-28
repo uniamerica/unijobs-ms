@@ -8,6 +8,7 @@ import com.uniamerica.unijobsbackend.models.Produto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioProduto;
 import com.uniamerica.unijobsbackend.repositories.RepositorioTipoProduto;
 import com.uniamerica.unijobsbackend.repositories.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,47 +16,41 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.function.Supplier;
 
 @Service
+@RequiredArgsConstructor
 public class ProdutoService {
-    @Autowired
     private final RepositorioProduto repositorioProduto;
 
-    @Autowired
     private final UsuarioRepository usuarioRepository;
 
-    @Autowired
     private final RepositorioTipoProduto repositorioTipoProduto;
 
-    public ProdutoService(RepositorioProduto repositorioProduto, RepositorioTipoProduto repositorioTipoProduto, UsuarioRepository usuarioRepository) {
-        this.repositorioProduto = repositorioProduto;
-        this.repositorioTipoProduto = repositorioTipoProduto;
-        this.usuarioRepository = usuarioRepository;
-    }
-
-    public Page<Produto> VisualizarProduto(Pageable pageable){
+    public Page<Produto> findAll(Pageable pageable) {
         return repositorioProduto.findAll(pageable);
     }
 
-    public Produto CadastrarProduto(Produto produto) {
-        Integer id_tipo_produto = produto.getTipoProduto().getId_tipo_produto();
-        Integer id_usuario = produto.getUsuario().getId();
+    public Produto create(Produto produto) {
+        Integer idTipoProduto = produto.getTipoProduto().getId_tipo_produto();
+        Integer idUsuario = produto.getUsuario().getId();
 
-        var tipo = repositorioTipoProduto.findById(id_tipo_produto)
-          .orElseThrow(
-            () -> new RecursoNaoEncontradoExcessao("Categoria não Encontrada! id:" + id_tipo_produto)
-          );
+        var tipo = repositorioTipoProduto
+                .findById(idTipoProduto)
+                .orElseThrow(throwException("Categoria não Encontrada! id:" + idTipoProduto));
 
-        var usuario = usuarioRepository.findById(id_usuario)
-            .orElseThrow(
-                () -> new RecursoNaoEncontradoExcessao("Usuario não Encontrado! id:" + id_usuario)
-            );
+        var usuario = usuarioRepository
+                .findById(idUsuario)
+                .orElseThrow(throwException("Usuario não Encontrado! id:" + idUsuario));
+
         produto.setTipoProduto(tipo);
         produto.setAtivo(true);
         produto.setUsuario(usuario);
+
         Cloudinary cloudinary = CloudinarySingleton.getCloudinary();
         try {
-            var uploadResult = cloudinary.uploader().upload(produto.getMiniatura(), ObjectUtils.emptyMap());
+            var uploadResult = cloudinary.uploader()
+                    .upload(produto.getMiniaturaBytes(), ObjectUtils.emptyMap());
             produto.setMiniatura((String) uploadResult.get("url"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,34 +58,36 @@ public class ProdutoService {
         return repositorioProduto.save(produto);
     }
 
-    public String DeletarProduto(Integer id) {
+    public String delete(Integer id) {
         boolean existe = repositorioProduto.existsById(id);
-        if(!existe){
-            throw new RecursoNaoEncontradoExcessao("Produto não Existe. id: " + id);
+        if (!existe) {
+            throwException("Produto não Existe. id: " + id).get();
         }
         repositorioProduto.deleteById(id);
         return "Produto deletado com sucesso!";
     }
 
-    @Transactional
-    public Produto EditarProduto(Integer id, Produto novoProduto) {
-        Produto produto1 = repositorioProduto.findById(id)
-                .orElseThrow(
-                        () -> new IllegalStateException("Produto não Existe. id: " + id)
-                );
-        produto1.setTitulo(novoProduto.getTitulo());
-        produto1.setDescricao(novoProduto.getDescricao());
-        produto1.setMiniatura(novoProduto.getMiniatura());
-        produto1.setPrazo(novoProduto.getPrazo());
-        produto1.setPreco(novoProduto.getPreco());
-        produto1.setTipoProduto(novoProduto.getTipoProduto());
-        produto1.setAtivo(novoProduto.getAtivo());
-        return produto1;
+    public Produto update(Integer id, Produto novoProduto) {
+        Produto produto = repositorioProduto
+                .findById(id)
+                .orElseThrow(() -> new IllegalStateException("Produto não Existe. id: " + id));
+
+        produto.setTitulo(novoProduto.getTitulo());
+        produto.setDescricao(novoProduto.getDescricao());
+        produto.setMiniatura(novoProduto.getMiniatura());
+        produto.setPrazo(novoProduto.getPrazo());
+        produto.setPreco(novoProduto.getPreco());
+        produto.setTipoProduto(novoProduto.getTipoProduto());
+        produto.setAtivo(novoProduto.getAtivo());
+        return produto;
     }
 
-    public Produto BuscarProduto(Integer id) {
-        return repositorioProduto.findById(id).orElseThrow(
-            () -> new IllegalStateException("Produto não Existe. id: " + id)
-        );
+    public Produto findById(Integer id) {
+        return repositorioProduto.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Produto não Existe. id: " + id));
+    }
+
+    private Supplier<RecursoNaoEncontradoExcessao> throwException(String message) {
+        return () -> new RecursoNaoEncontradoExcessao(message);
     }
 }

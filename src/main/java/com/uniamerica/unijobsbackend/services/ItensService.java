@@ -21,7 +21,7 @@ public class ItensService {
     private final RepositorioProduto produtoRepository;
     private final RepositorioTipoProduto tipoProdutoRepository;
 
-    public List<ItensDTO> recentemente_adicionados(){
+    public List<ItensDTO> recentementeAdicionados(){
         var produtos = produtoRepository.findTop5ByOrderByUpdatedAtDesc();
         var servicos = servicoRepository.findTop5ByOrderByUpdatedAtDesc();
 

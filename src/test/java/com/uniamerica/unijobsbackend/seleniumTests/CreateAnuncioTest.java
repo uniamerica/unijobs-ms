@@ -1,5 +1,6 @@
 package com.uniamerica.unijobsbackend.seleniumTests;
 
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -8,16 +9,14 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static java.util.Objects.requireNonNull;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-public class TestCreateAnuncio {
+public class CreateAnuncioTest {
 
     private WebDriver driver;
 
@@ -32,7 +31,7 @@ public class TestCreateAnuncio {
         return random.nextInt((999999 - 100000) + 1) + 100000;
     }
 
-    @Before
+    @BeforeAll
     public void setUp(){
         System.setProperty("webdriver.chrome.driver", getDriverLocation());
         driver = new ChromeDriver();
@@ -47,7 +46,7 @@ public class TestCreateAnuncio {
                 .getPath();
     }
 
-    @After
+    @AfterAll
     public void tearDown() throws Exception{
         driver.quit();
     }
@@ -58,7 +57,7 @@ public class TestCreateAnuncio {
     public void openWebSite() throws InterruptedException {
         driver.get("http://localhost:3000/");
         Thread.sleep(3000);
-        assertTrue("Título da Página difere do esperado", driver.getTitle().contentEquals("UniJobs"));
+        assertTrue(driver.getTitle().contentEquals("UniJobs"), "Título da Página difere do esperado");
     }
 
     /*TESTE PARA TENTAR CRIAR UM NOVO PRODUTO SEM TER UMA CONTA NO SISTEMA*/
@@ -70,7 +69,7 @@ public class TestCreateAnuncio {
         try{
             driver.findElement(By.xpath("/html/body/div/header/div/a[1]")).click();
             Thread.sleep(2000);
-            assertTrue("Página difere do esperado", driver.getCurrentUrl().contentEquals("http://localhost:3000/login"));
+            assertTrue(driver.getCurrentUrl().contentEquals("http://localhost:3000/login"));
         }
         finally {
             driver.quit();
@@ -98,7 +97,7 @@ public class TestCreateAnuncio {
             driver.findElement(By.name("senha_confirmacao")).sendKeys("123456");
             driver.findElement(By.xpath("/html/body/div/section/section/form/button")).click();
             Thread.sleep(2000);
-            assertTrue("Página difere do esperado", driver.getCurrentUrl().contentEquals("http://localhost:3000/"));
+            assertTrue(driver.getCurrentUrl().contentEquals("http://localhost:3000/"));
         }
         finally {
             driver.quit();
@@ -118,7 +117,7 @@ public class TestCreateAnuncio {
             driver.findElement(By.name("password")).sendKeys("123456");
             driver.findElement(By.xpath("/html/body/div/section/section/form/button")).click();
             Thread.sleep(3000);
-            assertTrue("Página difere do esperado", driver.getCurrentUrl().contentEquals("http://localhost:3000/"));
+            assertTrue(driver.getCurrentUrl().contentEquals("http://localhost:3000/"));
         }
         finally {
             driver.quit();
@@ -152,7 +151,7 @@ public class TestCreateAnuncio {
             driver.findElement(By.name("miniatura")).sendKeys("C:\\Users\\SUPORTE\\Documents\\workspace\\JAVA\\UNIJOBS\\images\\amindus-784.jpg");
             driver.findElement(By.xpath("/html/body/div/div[1]/div/div/div/form/button/button[1]")).click();
             Thread.sleep(6000);
-            assertTrue("Página difere do esperado", driver.getCurrentUrl().contentEquals("http://localhost:3000/"));
+            assertTrue(driver.getCurrentUrl().contentEquals("http://localhost:3000/"));
         }
         finally {
             driver.quit();
@@ -169,7 +168,7 @@ public class TestCreateAnuncio {
             driver.findElement(By.xpath("/html/body/div/div[2]/div[1]/div/div[2]/ul/li[23]/section/section/footer/a")).click();
             Thread.sleep(4000);
 
-            assertEquals("Bolinhos de Chocolate", driver.findElement(By.xpath("/html/body/div/section/div/div[2]/h1")).getText());
+            Assertions.assertEquals("Bolinhos de Chocolate", driver.findElement(By.xpath("/html/body/div/section/div/div[2]/h1")).getText());
             assertEquals("Deguste de deliciosos bolinhos de chocolate, com bastante chocolate, e mais chocolate, para fazer bem pro seu colesterol",
                     driver.findElement(By.xpath("/html/body/div/section/div/div[3]/p")).getText());
         }

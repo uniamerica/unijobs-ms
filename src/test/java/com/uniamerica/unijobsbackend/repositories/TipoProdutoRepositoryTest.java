@@ -4,12 +4,12 @@ import com.uniamerica.unijobsbackend.models.TipoProduto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.dao.EmptyResultDataAccessException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
-public class TesteTipoProdutoRepository {
+public class TipoProdutoRepositoryTest {
 
     @Autowired
     public RepositorioTipoProduto repositorio;

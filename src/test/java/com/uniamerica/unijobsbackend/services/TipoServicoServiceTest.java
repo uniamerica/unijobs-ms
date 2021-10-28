@@ -3,7 +3,6 @@ package com.uniamerica.unijobsbackend.services;
 import com.uniamerica.unijobsbackend.models.TipoServico;
 import com.uniamerica.unijobsbackend.repositories.ServicoRepository;
 import com.uniamerica.unijobsbackend.repositories.TipoServicoRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,19 +13,18 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-//@AutoConfigureMockMvc
-//@WebMvcTest
-//@RunWith(MockitoJUnitRunner.class)
-//@ExtendWith(MockitoExtension.class)
 @ExtendWith(SpringExtension.class)
 class TipoServicoServiceTest {
 
     @Mock
     private ServicoRepository repository;
+
     @Mock
     private TipoServicoRepository tipoServicoRepository;
 
@@ -42,37 +40,33 @@ class TipoServicoServiceTest {
     @Test
     void shouldReturnSuccess_FindAllTipoServices() {
 
-        TipoServico tipoServico1 = new TipoServico(1,"Manutenção", "manutencao em computadores");
+        TipoServico tipoServico1 = new TipoServico(1, "Manutenção", "manutencao em computadores");
         tipoServicoRepository.save(tipoServico1);
 
-        var listTipoServicos = tipoServicoClass.listarTiposServicos();
+        var listTipoServicos = tipoServicoClass.findAll();
 
-        //then
-        assertThat(listTipoServicos.contains(tipoServico1));
+        assertTrue(listTipoServicos.contains(tipoServico1));
     }
 
     @DisplayName("Registrar um novo Tipo Serviço")
     @Test
     void shouldCreateTipoServicos_ReturnSucess() {
 
-        // cenario
-        TipoServico tipoServicoteste = new TipoServico(1,"Manutenção", "manutencao em computadores");
-        var result = tipoServicoClass.novoTipoServico(tipoServicoteste);
+        TipoServico tipoServicoteste = new TipoServico(1, "Manutenção", "manutencao em computadores");
+        var result = tipoServicoClass.save(tipoServicoteste);
 
-        var listTipoServicos = tipoServicoClass.listarTiposServicos();
+        var listTipoServicos = tipoServicoClass.findAll();
 
-        //then
-        assertThat(listTipoServicos.contains(tipoServicoteste));
+        assertTrue(listTipoServicos.contains(tipoServicoteste));
 
     }
 
     @DisplayName("Deletar um Tipo Serviço")
     @Test
     void shouldDestroyTipoServico() {
-        // cenario
-        TipoServico tipoServicoteste = new TipoServico(1,"Manutenção", "manutencao em computadores");
+        TipoServico tipoServicoteste = new TipoServico(1, "Manutenção", "manutencao em computadores");
 
-        when(tipoServicoClass.novoTipoServico(tipoServicoteste)).thenReturn(tipoServicoteste);
+        when(tipoServicoClass.save(tipoServicoteste)).thenReturn(tipoServicoteste);
         var result = tipoServicoClass.deletarTipoServico(1);
 
         assertThat(result).isEqualTo("Tipo Serviço deletado com sucesso!");
@@ -82,25 +76,23 @@ class TipoServicoServiceTest {
     @DisplayName("Atualizar um Tipo Serviço")
     @Test
     void shouldUpdateTipoServico() {
-        // cenario
-        TipoServico tipoServicoteste = new TipoServico(1,"Manutenção", "manutencao em computadores");
+        TipoServico tipoServicoteste = new TipoServico(1, "Manutenção", "manutencao em computadores");
         TipoServico novoTipoServico = new TipoServico("Aulas de Musica", "Aulas de Musica");
         tipoServicoRepository.save(tipoServicoteste);
 
         when(tipoServicoRepository.findById(any())).thenReturn(Optional.of(tipoServicoteste));
 
-        Assertions.assertDoesNotThrow(() -> tipoServicoClass.atualizarTipoServico(1, novoTipoServico));
+        assertDoesNotThrow(() -> tipoServicoClass.update(1, novoTipoServico));
     }
 
     @DisplayName("Busca Tipo Serviço por id")
     @Test
     void shouldaFindTipoServicoForId() {
-        // cenario
-        TipoServico tipoServicoteste = new TipoServico(1,"Manutenção", "manutencao em computadores");
+        TipoServico tipoServicoteste = new TipoServico(1, "Manutenção", "manutencao em computadores");
         tipoServicoRepository.save(tipoServicoteste);
 
         when(tipoServicoRepository.findById(any())).thenReturn(Optional.of(tipoServicoteste));
 
-        Assertions.assertDoesNotThrow(() -> tipoServicoClass.servicosByTipoServicos(1));
+        assertDoesNotThrow(() -> tipoServicoClass.findByServiceType(1));
     }
 }

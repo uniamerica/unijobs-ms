@@ -21,8 +21,8 @@ public class ItensController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ItensDTO>> recentemente_adicionados(){
-        return ResponseEntity.ok(service.recentemente_adicionados());
+    public ResponseEntity<List<ItensDTO>> recentementeAdicionados(){
+        return ResponseEntity.ok(service.recentementeAdicionados());
     }
 
 }

@@ -4,11 +4,13 @@ import com.uniamerica.unijobsbackend.models.Produto;
 import com.uniamerica.unijobsbackend.models.TipoProduto;
 import com.uniamerica.unijobsbackend.models.Usuario;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 
 @Data
 public class NovoProdutoDTO {
@@ -22,7 +24,7 @@ public class NovoProdutoDTO {
     private Double preco;
 
     @NotBlank(message = "A miniatura é obrigatória.")
-    private String miniatura;
+    private MultipartFile miniatura;
 
     @NotNull(message = "O prazo é obrigatório.")
     private Integer prazo;
@@ -41,16 +43,19 @@ public class NovoProdutoDTO {
     @NotNull(message = "O Usuario é obrigatório")
     private Integer id_usuario;
 
-    public Produto converteModelo(){
+    public Produto converteModelo() {
         Produto produto = new Produto();
-        produto.setTitulo(titulo);
-        produto.setDescricao(descricao);
-        produto.setPreco(preco);
-        produto.setMiniatura(miniatura);
-        produto.setPrazo(prazo);
-        produto.setTipoProduto(new TipoProduto(id_tipo_produto));
-        produto.setUsuario(Usuario.builder().id(id_usuario).build());
-
+        try {
+            produto.setTitulo(titulo);
+            produto.setDescricao(descricao);
+            produto.setPreco(preco);
+            produto.setMiniaturaBytes(miniatura.getBytes());
+            produto.setPrazo(prazo);
+            produto.setTipoProduto(new TipoProduto(id_tipo_produto));
+            produto.setUsuario(Usuario.builder().id(id_usuario).build());
+        } catch (IOException e) {
+            throw new RuntimeException("failed to convert dto to entity");
+        }
         return produto;
     }
 }
