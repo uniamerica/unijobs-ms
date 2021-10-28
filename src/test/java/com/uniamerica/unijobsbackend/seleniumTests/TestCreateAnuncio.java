@@ -5,7 +5,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -44,7 +43,7 @@ public class TestCreateAnuncio {
     private String getDriverLocation() {
         return requireNonNull(this.getClass()
                 .getClassLoader()
-                .getResource("chromedriver.exe"))
+                .getResource("selenium-drivers/chromedriver-94.exe"))
                 .getPath();
     }
 
