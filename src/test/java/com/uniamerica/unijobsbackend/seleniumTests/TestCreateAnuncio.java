@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -12,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.*;
 
 @SpringBootTest
@@ -31,11 +34,18 @@ public class TestCreateAnuncio {
     }
 
     @Before
-    public void setUp() throws Exception{
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\SUPORTE\\Documents\\workspace\\JAVA\\UNIJOBS\\images\\chromedriver.exe");
+    public void setUp(){
+        System.setProperty("webdriver.chrome.driver", getDriverLocation());
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(60000, TimeUnit.MILLISECONDS);
         driver.manage().window().maximize();
+    }
+
+    private String getDriverLocation() {
+        return requireNonNull(this.getClass()
+                .getClassLoader()
+                .getResource("chromedriver.exe"))
+                .getPath();
     }
 
     @After
