@@ -23,12 +23,12 @@ public class TipoProduto {
     public TipoProduto() {
     }
 
-    public TipoProduto(Integer id_tipo_produto) {
-        this.id_tipo_produto = id_tipo_produto;
+    public TipoProduto(Integer idTipoProduto) {
+        this.id_tipo_produto = idTipoProduto;
     }
 
-    public TipoProduto(Integer id_tipo_produto, String nome, String descricao) {
-        this.id_tipo_produto = id_tipo_produto;
+    public TipoProduto(Integer idTipoProduto, String nome, String descricao) {
+        this.id_tipo_produto = idTipoProduto;
         this.nome = nome;
         this.descricao = descricao;
     }

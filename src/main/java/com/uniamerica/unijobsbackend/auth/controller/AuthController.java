@@ -22,9 +22,14 @@ public class AuthController {
 
     @PostMapping(value = "/authenticate")
     public ResponseEntity<?> login(@RequestBody LoginDto login) throws Exception {
-        String token = service.login(login.getEmail(), login.getPassword());
-        return ResponseEntity.ok(new ResponseTokenDto(token));
+        return ResponseEntity.ok(service.login(login.getEmail(), login.getPassword()));
     }
+
+    @PostMapping(value = "/refresh_token")
+    public ResponseEntity<?> refreshTokenAccess(@RequestParam("refresh_token") String refreshToken) {
+        return ResponseEntity.ok(service.updateTokenWithRefreshToken(refreshToken));
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/register")
     @ResponseStatus(HttpStatus.CREATED)
