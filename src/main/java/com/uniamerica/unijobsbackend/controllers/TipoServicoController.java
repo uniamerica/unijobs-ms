@@ -28,21 +28,21 @@ public class TipoServicoController {
     @Operation(summary = "Retorna todos os Tipo Serviço")
     @GetMapping
     public ResponseEntity<List<TipoServicoDTO>> listar(){
-        return ResponseEntity.ok(tipoServicoService.listarTiposServicos());
+        return ResponseEntity.ok(tipoServicoService.findAll());
     }
 
     @Operation(summary = "cadastra um Tipo Serviço")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<TipoServico> cadastrar(@Valid @RequestBody TipoServico tipoServico){
-        return ResponseEntity.ok(tipoServicoService.novoTipoServico(tipoServico));
+        return ResponseEntity.ok(tipoServicoService.save(tipoServico));
     }
 
     @Operation(summary = "edita um Tipo Serviço")
     @PutMapping(path = "{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<TipoServicoDTO> atualizar(@Valid @RequestBody TipoServico novoTipoServico, @PathVariable("id") Integer id){
-        return ResponseEntity.ok(tipoServicoService.atualizarTipoServico( id, novoTipoServico));
+        return ResponseEntity.ok(tipoServicoService.update( id, novoTipoServico));
     }
 
     @Operation(summary = "Deleta um Tipo Serviço")
@@ -55,6 +55,6 @@ public class TipoServicoController {
     @Operation(summary = "os Servicos daquele Tipo Servico")
     @GetMapping(path = "{id}/servicos")
     public ResponseEntity<List<ServicoDTO>> servicosByTipoServicos(@PathVariable("id") Integer id){
-        return ResponseEntity.ok(tipoServicoService.servicosByTipoServicos(id));
+        return ResponseEntity.ok(tipoServicoService.findByServiceType(id));
     }
 }

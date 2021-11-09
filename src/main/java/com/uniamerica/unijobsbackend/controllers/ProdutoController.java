@@ -7,8 +7,8 @@ import com.uniamerica.unijobsbackend.services.ProdutoService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,49 +20,48 @@ import javax.validation.Valid;
 @RequestMapping({"/produtos"})
 @SecurityRequirement(name = "bearerAuth")
 @OpenAPIDefinition
+@RequiredArgsConstructor
 public class ProdutoController {
-    @Autowired
-    private ProdutoService produtoService;
+    private final ProdutoService produtoService;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     @GetMapping
     @Operation(summary = "Retorna uma lista de Produtos")
-    public Page<ProdutoDTO> visualizar(Pageable pageable){
-        return produtoService.VisualizarProduto(pageable)
+    public Page<ProdutoDTO> visualizar(Pageable pageable) {
+        return produtoService.findAll(pageable)
                 .map(this::toProdutoDTO);
     }
 
     @PostMapping
     @Operation(summary = "Cadastra um Produto.")
     @ResponseStatus(HttpStatus.CREATED)
-    public Produto cadastrar(@Valid @RequestBody NovoProdutoDTO produto){
-        return produtoService.CadastrarProduto(produto.converteModelo());
+    public Produto cadastrar(@Valid @ModelAttribute NovoProdutoDTO produtoDTO) {
+        return produtoService.create(produtoDTO.converteModelo());
     }
 
     @PutMapping(path = "{id_produto}")
     @Operation(summary = "Edita um Produto")
     @ResponseStatus(HttpStatus.OK)
-    public Produto editar(@Valid @RequestBody Produto novoProduto, @PathVariable("id_produto") Integer id_produto){
-        return produtoService.EditarProduto(id_produto, novoProduto);
+    public Produto editar(@Valid @RequestBody Produto novoProduto, @PathVariable("id_produto") Integer idProduto) {
+        return produtoService.update(idProduto, novoProduto);
     }
 
     @DeleteMapping(path = "{id_produto}")
     @Operation(summary = "Deleta um Produto.")
     @ResponseStatus(HttpStatus.OK)
-    public String deletar(@PathVariable("id_produto") Integer id_produto){
-        return produtoService.DeletarProduto(id_produto);
+    public String deletar(@PathVariable("id_produto") Integer idProduto) {
+        return produtoService.delete(idProduto);
     }
 
-    private ProdutoDTO toProdutoDTO(Produto produto){
+    private ProdutoDTO toProdutoDTO(Produto produto) {
         return modelMapper.map(produto, ProdutoDTO.class);
     }
 
     @GetMapping(path = "{id_produto}")
     @Operation(summary = "Busca um Produto")
     @ResponseStatus(HttpStatus.OK)
-    public ProdutoDTO buscaProdutoPorId(@PathVariable("id_produto") Integer id_produto){
-        return toProdutoDTO(produtoService.BuscarProduto(id_produto));
+    public ProdutoDTO buscaProdutoPorId(@PathVariable("id_produto") Integer idProduto) {
+        return toProdutoDTO(produtoService.findById(idProduto));
     }
 }

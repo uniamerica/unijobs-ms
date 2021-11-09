@@ -1,20 +1,34 @@
 package com.uniamerica.unijobsbackend.auth.model;
 
+import com.uniamerica.unijobsbackend.models.Privilege;
+import com.uniamerica.unijobsbackend.models.Role;
 import com.uniamerica.unijobsbackend.models.Usuario;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
+import java.util.*;
 
 public class UserSecurity extends Usuario implements UserDetails {
 
-    public UserSecurity(Usuario user) {
-        super(user);
+    public UserSecurity(Usuario usuario) {
+        super(usuario);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<Privilege> privileges = new ArrayList<>();
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority(role.getName().name()));
+            privileges.addAll(role.getPrivileges());
+        });
+
+        privileges.forEach(privilege ->
+                authorities.add(new SimpleGrantedAuthority(privilege.getName())));
+
+        return authorities;
     }
 
     @Override
