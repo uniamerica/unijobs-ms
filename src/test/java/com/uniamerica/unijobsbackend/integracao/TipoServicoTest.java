@@ -3,10 +3,8 @@ package com.uniamerica.unijobsbackend.integracao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uniamerica.unijobsbackend.models.TipoServico;
 import com.uniamerica.unijobsbackend.repositories.TipoServicoRepository;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -15,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import javax.validation.ConstraintViolationException;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -62,9 +62,10 @@ class TipoServicoTest {
         ).andExpect(status().isOk());
     }
 
+    @SneakyThrows
     @Test
     @Order(3)
-    void shouldAddTipoServicoReturnValidationExceptionIfNotValid() throws Exception {
+    void shouldAddTipoServicoReturnValidationExceptionIfNotValid() {
         TipoServico tipoServicoTest = new TipoServico("Manutenção");
 
         String content = objectMapper.writeValueAsString(tipoServicoTest);
@@ -102,7 +103,7 @@ class TipoServicoTest {
         String content = objectMapper.writeValueAsString(tipoServicoTest);
 
         mockMvc.perform(
-                put(url + "/{id}", 1L)
+                put(url + "/{id}", 99999L)
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)

@@ -30,12 +30,10 @@ public class AuthController {
         return ResponseEntity.ok(service.updateTokenWithRefreshToken(refreshToken));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UsuarioDto saveUser(@RequestBody RegisterDto user) throws Exception {
+    public ResponseEntity<UsuarioDto> saveUser(@RequestBody RegisterDto user) throws Exception {
         Usuario usuario = service.register(user.toModel());
-        return new UsuarioDto(usuario);
+        return ResponseEntity.ok(new UsuarioDto(usuario));
     }
 
 

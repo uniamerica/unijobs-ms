@@ -79,7 +79,7 @@ class TipoServicoControllerTest {
 
         ResponseEntity<TipoServico> cad = TestClassController.cadastrar(tipoServicoteste);
         tipoServicoRepository.save(tipoServicoteste);
-        String result = TestClassController.deletar(1);
+        TestClassController.deletar(1);
 
         assertThat(cad.getStatusCode()).isEqualTo(HttpStatus.OK);
 
