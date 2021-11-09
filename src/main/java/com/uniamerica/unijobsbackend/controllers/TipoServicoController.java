@@ -33,23 +33,20 @@ public class TipoServicoController {
 
     @Operation(summary = "cadastra um Tipo Serviço")
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<TipoServico> cadastrar(@Valid @RequestBody TipoServico tipoServico){
         return ResponseEntity.ok(tipoServicoService.save(tipoServico));
     }
 
     @Operation(summary = "edita um Tipo Serviço")
     @PutMapping(path = "{id}")
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<TipoServicoDTO> atualizar(@Valid @RequestBody TipoServico novoTipoServico, @PathVariable("id") Integer id){
         return ResponseEntity.ok(tipoServicoService.update( id, novoTipoServico));
     }
 
     @Operation(summary = "Deleta um Tipo Serviço")
     @DeleteMapping(path = "{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public String deletar(@PathVariable("id") Integer id){
-        return tipoServicoService.deletarTipoServico(id);
+    public ResponseEntity<String> deletar(@PathVariable("id") Integer id){
+        return ResponseEntity.ok(tipoServicoService.deletarTipoServico(id));
     }
 
     @Operation(summary = "os Servicos daquele Tipo Servico")

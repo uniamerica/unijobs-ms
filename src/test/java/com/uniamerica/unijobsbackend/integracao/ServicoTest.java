@@ -56,7 +56,7 @@ class ServicoTest {
     String url = "/servicos";
 
     private Usuario createUser() throws Exception {
-        TipoUsuario tipoUsuario = new TipoUsuario();
+        TipoUsuario tipoUsuario = new TipoUsuario(1, "ADMIN");
         Usuario newUser = new Usuario(null,
                 "willianthiagofozz@hotmail.com",
                 "Wilian",

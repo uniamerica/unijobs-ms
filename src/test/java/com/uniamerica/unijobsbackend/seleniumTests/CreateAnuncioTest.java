@@ -16,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-public class CreateAnuncioTest {
+@Disabled("pipeline execution")
+class CreateAnuncioTest {
 
     private WebDriver driver;
 
@@ -31,7 +32,7 @@ public class CreateAnuncioTest {
         return random.nextInt((999999 - 100000) + 1) + 100000;
     }
 
-    @BeforeAll
+    @BeforeEach
     public void setUp(){
         System.setProperty("webdriver.chrome.driver", getDriverLocation());
         driver = new ChromeDriver();
@@ -46,8 +47,8 @@ public class CreateAnuncioTest {
                 .getPath();
     }
 
-    @AfterAll
-    public void tearDown() throws Exception{
+    @AfterEach
+    public void tearDown() {
         driver.quit();
     }
 
