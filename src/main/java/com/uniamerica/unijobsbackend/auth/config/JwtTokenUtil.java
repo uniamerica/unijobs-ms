@@ -9,10 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Component
@@ -34,7 +31,9 @@ public class JwtTokenUtil implements Serializable {
     }
 
     public boolean isRefreshToken(String token) {
-        return getClaimFromToken(token, claims -> claims.get("irt", Boolean.class));
+        return Optional
+                .ofNullable(getClaimFromToken(token, claims -> claims.get("irt", Boolean.class)))
+                .orElse(Boolean.FALSE);
     }
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
