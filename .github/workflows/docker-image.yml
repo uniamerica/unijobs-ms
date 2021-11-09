@@ -14,6 +14,7 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag jonasxpx/unijobs-java:1
   push:
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
     - name: Push docker image
