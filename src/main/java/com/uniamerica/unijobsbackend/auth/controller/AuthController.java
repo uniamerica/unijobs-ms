@@ -9,6 +9,7 @@ import com.uniamerica.unijobsbackend.models.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -21,14 +22,18 @@ public class AuthController {
 
     @PostMapping(value = "/authenticate")
     public ResponseEntity<?> login(@RequestBody LoginDto login) throws Exception {
-        String token = service.login(login.getEmail(), login.getPassword());
-        return ResponseEntity.ok(new ResponseTokenDto(token));
+        return ResponseEntity.ok(service.login(login.getEmail(), login.getPassword()));
     }
+
+    @PostMapping(value = "/refresh_token")
+    public ResponseEntity<?> refreshTokenAccess(@RequestParam("refresh_token") String refreshToken) {
+        return ResponseEntity.ok(service.updateTokenWithRefreshToken(refreshToken));
+    }
+
     @PostMapping(value = "/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UsuarioDto saveUser(@RequestBody RegisterDto user) throws Exception {
+    public ResponseEntity<UsuarioDto> saveUser(@RequestBody RegisterDto user) throws Exception {
         Usuario usuario = service.register(user.toModel());
-        return new UsuarioDto(usuario);
+        return ResponseEntity.ok(new UsuarioDto(usuario));
     }
 
 

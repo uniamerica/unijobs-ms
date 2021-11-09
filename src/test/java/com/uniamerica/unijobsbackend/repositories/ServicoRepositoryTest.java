@@ -40,7 +40,7 @@ class ServicoRepositoryTest {
 
         TipoServico tipo = new TipoServico(1);
 
-        Usuario usuario = new Usuario(1);
+        Usuario usuario = Usuario.builder().id(1).build();
 
         //given
         TipoServico tipoServicoteste = new TipoServico(1,"Manutenção", "manutencao em computadores");

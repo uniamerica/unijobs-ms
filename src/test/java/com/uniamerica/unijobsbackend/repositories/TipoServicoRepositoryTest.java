@@ -21,27 +21,21 @@ class TipoServicoRepositoryTest {
 
     @Test
     void findTipoServicoByNomeShouldReturnTipoServico(){
-        //given
         String nome = "Manutencao";
         TipoServico tipoServico = new TipoServico(nome, "manutencao em computadores");
         underTest.save(tipoServico);
 
-        //when
         var exists = underTest.findTipoServicoByNome(nome);
 
-        //then
         assertThat(exists).contains(tipoServico);
     }
 
     @Test
     void findTipoServicoByNomeShouldNotBeFound(){
-        //given
         String nome = "Jorge";
 
-        //when
         var exists = underTest.findTipoServicoByNome("Jorge");
 
-        //then
         assertThat(exists).isNotPresent();
     }
 }

@@ -2,6 +2,7 @@ package com.uniamerica.unijobsbackend.auth.services;
 
 import com.uniamerica.unijobsbackend.Excessoes.RegraNegocioExcessao;
 import com.uniamerica.unijobsbackend.auth.config.JwtTokenUtil;
+import com.uniamerica.unijobsbackend.auth.dto.ResponseTokenDto;
 import com.uniamerica.unijobsbackend.auth.model.UserSecurity;
 import com.uniamerica.unijobsbackend.models.Usuario;
 import com.uniamerica.unijobsbackend.repositories.UsuarioRepository;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,17 +34,17 @@ public class AuthService {
         } else {
             usuario.setSenha(bcryptEncoder.encode(usuario.getSenha()));
             return usuarioRepository.save(usuario);
-
         }
-
     }
 
-    public String login(String email, String password) throws Exception {
+    public ResponseTokenDto login(String email, String password) throws Exception {
         authenticate(email, password);
-
         final UserSecurity userDetails = (UserSecurity) userDetailsService.loadUserByUsername(email);
 
-        return jwtTokenUtil.generateToken(userDetails);
+        return new ResponseTokenDto(
+                jwtTokenUtil.generateToken(userDetails),
+                jwtTokenUtil.generateRefreshToken(userDetails)
+        );
     }
 
     private void authenticate(String username, String password) throws Exception {
@@ -55,4 +57,18 @@ public class AuthService {
         }
     }
 
+    public ResponseTokenDto updateTokenWithRefreshToken(String refreshToken) {
+        String username = jwtTokenUtil.getUsernameFromToken(refreshToken);
+        UserSecurity userDetails = (UserSecurity) userDetailsService.loadUserByUsername(username);
+
+        if(!jwtTokenUtil.validateToken(refreshToken, userDetails)
+                && !jwtTokenUtil.isRefreshToken(refreshToken)) {
+            throw new RuntimeException("invalid refresh token");
+        }
+
+        return new ResponseTokenDto(
+                jwtTokenUtil.generateToken(userDetails),
+                jwtTokenUtil.generateRefreshToken(userDetails)
+        );
+    }
 }
