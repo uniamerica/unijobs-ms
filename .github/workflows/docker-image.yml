@@ -18,4 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Push docker image
-      run: docker push jonasxpx/unijobs-java:1
+      run: |
+        echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
+        docker push jonasxpx/unijobs-java:1
