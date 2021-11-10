@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: [ JonasXPX-patch-1 ]
 
 jobs:
   build:
@@ -19,5 +19,5 @@ jobs:
     steps:
     - name: Push docker image
       run: |
-        echo $CR_PAT | docker login ghcr.io -u JonasXPX --password-stdin
+        echo ${{secrets.CR_PAT}} | docker login ghcr.io -u JonasXPX --password-stdin
         docker push jonasxpx/unijobs-java:1
