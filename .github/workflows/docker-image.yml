@@ -7,16 +7,13 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ghcr.io/jonasxpx/unijobs-java:1
-  push:
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
+      run: |
+        docker build . --file Dockerfile --tag ghcr.io/jonasxpx/unijobs-java:1
     - name: Push docker image
       run: |
         echo ${{secrets.CR_PAT}} | docker login ghcr.io -u JonasXPX --password-stdin
