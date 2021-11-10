@@ -11,6 +11,14 @@ WORKDIR /app
 
 COPY --from=build /build/target .
 
+ENV SERVER_PORT \
+    APP_PROFILE="prod"\
+    DB_HOST \
+    DB_PORT \
+    DB_USERNAME \
+    DB_PASSWORD \
+    DB_NAME
+
 CMD [ \
   "java", \
   "-Xmx256M", \

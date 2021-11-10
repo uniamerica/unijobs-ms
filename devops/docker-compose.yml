@@ -4,15 +4,28 @@ services:
     image: mysql:8
     container_name: database-unijobs
     ports:
-      - 3306:3306
+      - "3306:3306"
     hostname: database-unijobs
     volumes:
-      - $HOME/database-volume:/var/lib/mysql
+      - ~/database-volume:/var/lib/mysql
     environment:
-      MYSLQ_ROOT_PASSWORD: /hackme*
+      MYSQL_ROOT_PASSWORD: /hackme*
       MYSQL_DATABASE: unijobs
       MYSQL_USER: unijobs
       MYSQL_PASSWORD: CSxa23YNS&z5
+    links:
+      - unijobs-api
+  unijobs-api:
+    image: ghcr.io/uniamerica/unijobs-api:latest
+    restart: always
+    environment:
+      APP_PROFILE: prod
+      SERVER_PORT: 8080
+      DB_HOST: database-unijobs
+      DB_PORT: 3306
+      DB_USERNAME: unijobs
+      DB_PASSWORD: CSxa23YNS&z5
+      DB_NAME: unijobs
 networks:
   default:
     external:
