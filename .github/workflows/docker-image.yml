@@ -19,5 +19,5 @@ jobs:
     steps:
     - name: Push docker image
       run: |
-        echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
+        echo $CR_PAT | docker login ghcr.io -u JonasXPX --password-stdin
         docker push jonasxpx/unijobs-java:1
