@@ -1,9 +1,11 @@
 package com.uniamerica.unijobsbackend.auth.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uniamerica.unijobsbackend.auth.model.UserSecurity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,9 @@ public class JwtTokenUtil implements Serializable {
 
     @Value("${jwt.secret}")
     private String secret;
+
+    @Autowired
+    protected ObjectMapper objectMapper;
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -75,6 +80,7 @@ public class JwtTokenUtil implements Serializable {
                 .setSubject(subject.getUsername())
                 .claim("id_usuario", subject.getId())
                 .claim("nome", subject.getNome())
+                .claim("roles", subject.getAuthorities())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(expiration))
                 .signWith(SignatureAlgorithm.HS512, secret)

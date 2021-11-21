@@ -27,7 +27,7 @@ public class AuthService {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
 
-    public Usuario register(Usuario usuario) throws Exception {
+    public Usuario register(Usuario usuario) {
         Optional<Usuario> user = usuarioRepository.findByEmail(usuario.getEmail());
         if (user.isPresent()) {
             throw new RegraNegocioExcessao("Ja existe usuario cadastrado com este e-mail!");

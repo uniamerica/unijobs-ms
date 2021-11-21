@@ -56,7 +56,7 @@ public class Usuario implements Serializable {
     @OneToOne
     private TipoUsuario tipoUsuario;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "id_user"),

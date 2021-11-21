@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: ${APP_PROFILE:dev}
+  jpa:
+    open-in-view: false
+jwt:
+  secret: jKkyt8ykm9zhM2muHKqGpghPgQj6r7xj25p3JXJ7Hwgwr8fs4cfcPMVd65MCKhRBdYSsbF7tqVpaLrHcAVxCUgcvxuUub9nNdjMS9rV8agM29C64P7zBe7fdpzDuZdaS
+springdoc:
+  swagger-ui: 
+    operationsSorter: method
+
+cloudinary_api_key: ${API_KEY}
+cloudinary_api_secret: ${API_SECRET}
+cloudinary_cloud_name: ${CLOUD_NAME}
