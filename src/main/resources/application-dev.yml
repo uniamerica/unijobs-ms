@@ -1,0 +1,22 @@
+spring:
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    datasource:
+        url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/unijobs?createDatabaseIfNotExist=true
+        username: ${MYSQL_USER:unijobs}
+        password: ${MYSQL_PASSWORD:secret}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+server:
+    error:
+        include-message: always
+
+application:
+    default-user:
+        username: ${DEFAULT_USER_NAME:admin@admin.com}
+        password: ${DEFAULT_USER_PASSWORD:admin}
+        roles: ROLE_ADMIN
