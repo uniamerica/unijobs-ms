@@ -61,10 +61,10 @@ class TipoServicoTest {
         ).andExpect(status().isOk());
     }
 
-    /*@Test
+    @Test
     @Order(3)
     void shouldAddTipoServicoReturnValidationExceptionIfNotValid() throws Exception {
-        TipoServico tipoServicoTest = new TipoServico("Manutenção", "Manutenção de computadores");
+        TipoServico tipoServicoTest = new TipoServico("Manutenção");
 
         String content = objectMapper.writeValueAsString(tipoServicoTest);
 
@@ -74,7 +74,7 @@ class TipoServicoTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
         ).andExpect(status().isBadRequest());
-    }*/
+    }
 
     @Test
     @Order(4)
@@ -93,20 +93,20 @@ class TipoServicoTest {
         ).andExpect(status().isOk());
     }
 
-    /*@Test
+    @Test
     @Order(5)
     void shouldUpdateTipoServicoReturnsExceptionIfNotValid() throws Exception {
-       TipoServico tipoServicoTest = new TipoServico("Manutenção", "Manutenção de computadores");
+       TipoServico tipoServicoTest = new TipoServico("Manutenção de computadores");
 
         String content = objectMapper.writeValueAsString(tipoServicoTest);
 
         mockMvc.perform(
-                put(url + "/{id}", 1L)
+                put(url + "/{id}", 1)
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
         ).andExpect(status().isBadRequest());
-    }*/
+    }
 
     @Test
     @Order(6)

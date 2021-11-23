@@ -36,6 +36,7 @@ public class TipoServicoService {
 
     public String deletarTipoServico(Integer id) {
         Optional<TipoServico> existe = tipoServicoRepository.findById(id);
+        //var existe = tipoServicoRepository.existsById(id);
         if(existe == null){
             throw new RecursoNaoEncontradoExcessao("Tipo de Serviço não Existe. id: " + id);
         }

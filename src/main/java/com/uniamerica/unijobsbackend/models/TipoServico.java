@@ -48,6 +48,10 @@ public class TipoServico {
         this.id_tipo_servico = id_tipo_servico;
     }
 
+    public TipoServico(String nome) {
+        this.nome = nome;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
