@@ -23,7 +23,7 @@ public class NovoProdutoDTO {
     @NotNull(message = "O preço é obrigatório.")
     private Double preco;
 
-    @NotBlank(message = "A miniatura é obrigatória.")
+    @NotNull(message = "A miniatura é obrigatória.")
     private MultipartFile miniatura;
 
     @NotNull(message = "O prazo é obrigatório.")
