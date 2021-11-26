@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/profiles")
+@RequestMapping("/profiles")
 public class PerfilController {
 
     private PerfilService perfilService;
