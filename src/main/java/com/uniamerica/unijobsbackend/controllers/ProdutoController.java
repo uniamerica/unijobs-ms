@@ -12,9 +12,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping({"/produtos"})
@@ -58,10 +62,17 @@ public class ProdutoController {
         return modelMapper.map(produto, ProdutoDTO.class);
     }
 
-    @GetMapping(path = "{id_produto}")
+    @GetMapping(path = "{idProduto:[1-9]+}")
     @Operation(summary = "Busca um Produto")
     @ResponseStatus(HttpStatus.OK)
-    public ProdutoDTO buscaProdutoPorId(@PathVariable("id_produto") Integer idProduto) {
+    public ProdutoDTO buscaProdutoPorId(@PathVariable Integer idProduto) {
         return toProdutoDTO(produtoService.findById(idProduto));
+    }
+
+    @GetMapping(path = "{search}/search")
+    @Operation(summary = "Busca um Produto")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Page<Produto>> buscaProdutos(@PathVariable String search, Pageable pageable) {
+        return ok(produtoService.findBySearch(search, pageable));
     }
 }

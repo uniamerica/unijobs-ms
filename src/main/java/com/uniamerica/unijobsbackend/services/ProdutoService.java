@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.List;
 import java.util.function.Supplier;
 
 @Service
@@ -89,5 +90,9 @@ public class ProdutoService {
 
     private Supplier<RecursoNaoEncontradoExcessao> throwException(String message) {
         return () -> new RecursoNaoEncontradoExcessao(message);
+    }
+
+    public Page<Produto> findBySearch(String search, Pageable pageable) {
+        return repositorioProduto.findBySearch("%" + search + "%", pageable);
     }
 }
