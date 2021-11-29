@@ -16,7 +16,7 @@ services:
     links:
       - unijobs-api
   unijobs-api:
-    image: ghcr.io/uniamerica/unijobs-api:latest
+    image: ghcr.io/uniamerica/unijobs-api:1
     restart: always
     environment:
       APP_PROFILE: prod
@@ -27,7 +27,7 @@ services:
       DB_PASSWORD: CSxa23YNS&z5
       DB_NAME: unijobs
   unijobs-api:
-    image: ghcr.io/uniamerica/unijobs-front:latest
+    image: ghcr.io/uniamerica/unijobs-front:1
     restart: always
     environment:
       NGINX_PORT: 80
