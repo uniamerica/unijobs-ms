@@ -24,11 +24,11 @@ public class PerfilController {
         this.perfilService = perfilService;
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<Perfil> store(@Valid @RequestBody Perfil perfil) {
         return ResponseEntity.ok(perfilService.store(perfil));
     }
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<Perfil>> index() {
         return ResponseEntity.ok(perfilService.index());
     }

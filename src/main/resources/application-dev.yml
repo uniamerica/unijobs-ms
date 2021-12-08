@@ -20,3 +20,6 @@ application:
         username: ${DEFAULT_USER_NAME:admin@admin.com}
         password: ${DEFAULT_USER_PASSWORD:admin}
         roles: ROLE_ADMIN
+
+
+
