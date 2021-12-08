@@ -53,7 +53,7 @@ public class Usuario implements Serializable {
     @NotNull
     private String ra;
 
-    @OneToOne
+    @Transient
     private TipoUsuario tipoUsuario;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

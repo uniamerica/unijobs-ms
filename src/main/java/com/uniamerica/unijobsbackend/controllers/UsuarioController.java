@@ -1,12 +1,13 @@
 package com.uniamerica.unijobsbackend.controllers;
 
 import com.uniamerica.unijobsbackend.dto.UsuarioDto;
+import com.uniamerica.unijobsbackend.dto.input.AtualizarUsuarioDTO;
 import com.uniamerica.unijobsbackend.models.Usuario;
-import com.uniamerica.unijobsbackend.repositories.UsuarioRepository;
 import com.uniamerica.unijobsbackend.services.UsuarioService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 @RestController
 @OpenAPIDefinition
 @SecurityRequirement(name = "bearerAuth")
-@RequestMapping("/usuarios")
+@RequestMapping("/users")
 @CrossOrigin
 public class UsuarioController {
     private final UsuarioService usuarioService;
@@ -27,33 +28,33 @@ public class UsuarioController {
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
-    @PostMapping
-    public ResponseEntity<Usuario> store(@Valid @RequestBody Usuario usuario) {
-        return ResponseEntity.ok(usuarioService.store(usuario));
-    }
-    @GetMapping
-    public ResponseEntity<List<Usuario>> index() {
-        return ResponseEntity.ok(usuarioService.index());
-    }
-    @GetMapping("/{id}")
-    public ResponseEntity<Optional<Usuario>> show(@PathVariable Integer id) {
-        return ResponseEntity.ok(usuarioService.show(id));
-    }
-    @PutMapping("/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Integer id, @Valid @RequestBody Usuario usuario) {
-        Optional<Usuario> optionalUsuario = usuarioService.show(id);
 
-        if (optionalUsuario.isPresent()) {
-            usuario.setId(id);
-            return ResponseEntity.ok(usuarioService.update(usuario));
-        } else {
-            return null;
-        }
+    @GetMapping
+    public ResponseEntity<List<UsuarioDto>> index() {
+
+        var users = usuarioService.index().stream().map(UsuarioDto::new).collect(Collectors.toList());
+
+        return ResponseEntity.ok(users);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioDto> show(@PathVariable Integer id) {
+
+        var user = usuarioService.show(id);
+        return ResponseEntity.ok(new UsuarioDto(user));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioDto> update(@PathVariable Integer id, @Valid @RequestBody AtualizarUsuarioDTO usuario) {
+        var userUpdate = usuarioService.update(usuario.toModel(), id);
+        return ResponseEntity.ok(new UsuarioDto(userUpdate));
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Usuario> destroy(@PathVariable Integer id) {
+    public ResponseEntity<Void> destroy(@PathVariable Integer id) {
         usuarioService.destroy(id);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
 
 }

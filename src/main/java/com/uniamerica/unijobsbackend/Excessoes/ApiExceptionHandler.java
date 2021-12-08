@@ -56,4 +56,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     return ResponseEntity.status(statusHttp).body(corpo);
   }
+
+    @ExceptionHandler(AuthorizationExeption.class)
+    public ResponseEntity<RespostaApi> authorizationExeption (AuthorizationExeption ex, WebRequest request){
+        var statusHttp = HttpStatus.FORBIDDEN;
+        var timestamp = LocalDateTime.now();
+        var titulo = ex.getMessage();
+        var path = request.getDescription(false).substring(5);
+        var corpo = new RespostaApi(statusHttp.value(), timestamp, titulo, path);
+
+        return ResponseEntity.status(statusHttp).body(corpo);
+    }
 }
