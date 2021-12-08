@@ -80,6 +80,8 @@ public class JwtTokenUtil implements Serializable {
                 .setSubject(subject.getUsername())
                 .claim("id_usuario", subject.getId())
                 .claim("nome", subject.getNome())
+                .claim("celular", subject.getCelular())
+                .claim("ra", subject.getRa())
                 .claim("roles", subject.getAuthorities())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(expiration))
