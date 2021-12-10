@@ -10,7 +10,7 @@ FROM openjdk:11-jre-slim
 WORKDIR /app
 
 COPY --from=build /build/target .
-
+EXPOSE 8080
 ENV SERVER_PORT \
     APP_PROFILE="prod"\
     DB_HOST \

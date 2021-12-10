@@ -13,3 +13,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+application:
+  default-user:
+    username: ${DEFAULT_USER_NAME:admin@admin.com}
+    password: ${DEFAULT_USER_PASSWORD:admin}
+    roles: ROLE_ADMIN
