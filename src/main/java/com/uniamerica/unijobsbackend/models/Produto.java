@@ -1,8 +1,10 @@
 package com.uniamerica.unijobsbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 
 @Getter
@@ -39,5 +41,13 @@ public class Produto extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
+
+    @JsonGetter("usuario")
+    private Usuario jsonUsuario() {
+        return Objects.nonNull(usuario) ?
+                Usuario.builder()
+                        .id(usuario.getId())
+                        .build() : null;
+    }
 
 }
