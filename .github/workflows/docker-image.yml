@@ -1,18 +1,23 @@
 name: Deploy to docker hub
 
 on:
-  push:
-    branches: [ main ]
+  release:
+    types: [published]
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: |
-        docker build . --file Dockerfile --tag ghcr.io/jonasxpx/unijobs-java:1
-    - name: Push docker image
-      run: |
-        echo ${{secrets.CR_PAT}} | docker login ghcr.io -u JonasXPX --password-stdin
-        docker push ghcr.io/jonasxpx/unijobs-java:1
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: github
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+          rm -rf api-build/ | exit 1
+          git clone --branch ${{ github.ref_name }} --single-branch  https://github.com/${{github.repository}}.git api-build
+          cd api-build/ && docker build . --file Dockerfile --tag ghcr.io/jonasxpx/unijobs-java:${{ github.ref_name }}
+          docker service update --image ghcr.io/jonasxpx/unijobs-java:${{ github.ref_name }} web_unijobs-api
+
