@@ -3,7 +3,6 @@ package com.uniamerica.unijobsbackend.services;
 
 import com.uniamerica.unijobsbackend.models.Perfil;
 import com.uniamerica.unijobsbackend.repositories.PerfilRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

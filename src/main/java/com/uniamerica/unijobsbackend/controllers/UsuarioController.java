@@ -2,7 +2,6 @@ package com.uniamerica.unijobsbackend.controllers;
 
 import com.uniamerica.unijobsbackend.dto.UsuarioDto;
 import com.uniamerica.unijobsbackend.dto.input.AtualizarUsuarioDTO;
-import com.uniamerica.unijobsbackend.models.Usuario;
 import com.uniamerica.unijobsbackend.services.UsuarioService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
