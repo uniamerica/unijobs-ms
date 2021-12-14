@@ -1,13 +1,14 @@
 package com.uniamerica.unijobsbackend.auth.model;
 
 import com.uniamerica.unijobsbackend.models.Privilege;
-import com.uniamerica.unijobsbackend.models.Role;
 import com.uniamerica.unijobsbackend.models.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class UserSecurity extends Usuario implements UserDetails {
 

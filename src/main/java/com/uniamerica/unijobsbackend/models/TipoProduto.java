@@ -1,7 +1,6 @@
 package com.uniamerica.unijobsbackend.models;
 
 import lombok.Data;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

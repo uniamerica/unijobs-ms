@@ -13,24 +13,6 @@ services:
       MYSQL_DATABASE: unijobs
       MYSQL_USER: unijobs
       MYSQL_PASSWORD: CSxa23YNS&z5
-    links:
-      - unijobs-api
-  unijobs-api:
-    image: ghcr.io/uniamerica/unijobs-api:1
-    restart: always
-    environment:
-      APP_PROFILE: prod
-      SERVER_PORT: 8080
-      DB_HOST: database-unijobs
-      DB_PORT: 3306
-      DB_USERNAME: unijobs
-      DB_PASSWORD: CSxa23YNS&z5
-      DB_NAME: unijobs
-  unijobs-api:
-    image: ghcr.io/uniamerica/unijobs-front:1
-    restart: always
-    environment:
-      NGINX_PORT: 80
 networks:
   default:
     external:

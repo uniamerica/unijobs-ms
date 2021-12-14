@@ -1,6 +1,5 @@
 package com.uniamerica.unijobsbackend;
 
-import com.uniamerica.unijobsbackend.configs.application.Application;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

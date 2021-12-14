@@ -2,14 +2,11 @@ package com.uniamerica.unijobsbackend.auth.controller;
 
 import com.uniamerica.unijobsbackend.auth.dto.LoginDto;
 import com.uniamerica.unijobsbackend.auth.dto.RegisterDto;
-import com.uniamerica.unijobsbackend.auth.dto.ResponseTokenDto;
 import com.uniamerica.unijobsbackend.auth.services.AuthService;
 import com.uniamerica.unijobsbackend.dto.UsuarioDto;
 import com.uniamerica.unijobsbackend.models.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
