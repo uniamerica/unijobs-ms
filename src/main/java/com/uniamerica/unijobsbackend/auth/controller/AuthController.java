@@ -5,17 +5,18 @@ import com.uniamerica.unijobsbackend.auth.dto.RegisterDto;
 import com.uniamerica.unijobsbackend.auth.services.AuthService;
 import com.uniamerica.unijobsbackend.dto.UsuarioDto;
 import com.uniamerica.unijobsbackend.models.Usuario;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private AuthService service;
+    private final AuthService service;
 
     @PostMapping(value = "/authenticate")
     public ResponseEntity<?> login(@RequestBody LoginDto login) throws Exception {
@@ -32,8 +33,6 @@ public class AuthController {
         Usuario usuario = service.register(user.toModel());
         return ResponseEntity.ok(new UsuarioDto(usuario));
     }
-
-
 
 
 }

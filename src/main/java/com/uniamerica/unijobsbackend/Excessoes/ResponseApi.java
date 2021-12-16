@@ -11,7 +11,7 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
-public class RespostaApi {
+public class ResponseApi {
     private Integer statusHttp;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[xxx]")
@@ -20,7 +20,7 @@ public class RespostaApi {
     private String path;
     private List<Campo> campos;
 
-    public RespostaApi(Integer statusHttp, LocalDateTime timestamp, String titulo, String path) {
+    public ResponseApi(Integer statusHttp, LocalDateTime timestamp, String titulo, String path) {
         this.statusHttp = statusHttp;
         this.timestamp = timestamp;
         this.titulo = titulo;
