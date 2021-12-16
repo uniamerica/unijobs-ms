@@ -1,7 +1,7 @@
 package com.uniamerica.unijobsbackend.services;
 
 
-import com.uniamerica.unijobsbackend.Excessoes.AuthorizationExeption;
+import com.uniamerica.unijobsbackend.Excessoes.AuthorizationException;
 import com.uniamerica.unijobsbackend.Excessoes.RecursoNaoEncontradoExcessao;
 import com.uniamerica.unijobsbackend.auth.services.UserService;
 import com.uniamerica.unijobsbackend.models.Usuario;
@@ -30,7 +30,7 @@ public class UsuarioService {
         var auth = UserService.getAuthenticatedUser(); //recupera o usuario auteticado do token
 
         if (auth == null || auth.getId() != id){
-            throw new AuthorizationExeption("Acesso recusado");
+            throw new AuthorizationException("Acesso recusado");
         }
         return usuarioRepository.findById(id).orElseThrow(() ->new RecursoNaoEncontradoExcessao("User not found"));
     }
@@ -40,7 +40,7 @@ public class UsuarioService {
         var auth = UserService.getAuthenticatedUser(); //recupera o usuario auteticado do token
 
         if (auth == null || auth.getId() != id){
-            throw new AuthorizationExeption("Acesso recusado");
+            throw new AuthorizationException("Acesso recusado");
         }
 
         var user = this.show(id);
@@ -57,7 +57,7 @@ public class UsuarioService {
         var auth = UserService.getAuthenticatedUser(); //recupera o usuario auteticado do token
 
         if (auth == null || auth.getId() != id){
-            throw new AuthorizationExeption("Acesso recusado");
+            throw new AuthorizationException("Acesso recusado");
         }
         this.show(id);
         usuarioRepository.deleteById(id);
