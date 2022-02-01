@@ -17,7 +17,11 @@ public class AtualizarUsuarioDTO {
     private  String ra;
 
     public Usuario toModel(){
-        return Usuario.builder().nome(nome).celular(celular).ra(ra).build();
+        return Usuario.builder()
+                .nome(nome)
+                .celular(celular)
+                .ra(ra)
+                .build();
     }
 
 }

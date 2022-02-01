@@ -5,9 +5,10 @@ import com.uniamerica.unijobsbackend.models.Banner;
 import com.uniamerica.unijobsbackend.repositories.BannerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -16,9 +17,12 @@ public class BannerService {
 
     private final BannerRepository bannerRepository;
 
-    public Page<Banner> listarBanners(Pageable pageable) {
+    public List<Banner> listarBanner(){
+        return bannerRepository.findAll();
+    }
 
-        return bannerRepository.findAll(pageable);
+    public Banner criarBanner(Banner banner){
+        return bannerRepository.save(banner);
     }
 
     public Banner buscarBannerPorId(Integer id) {
